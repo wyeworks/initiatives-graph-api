@@ -20,6 +20,7 @@
 #  wyeworker_id   (wyeworker_id => wyeworkers.id)
 #
 class PertenenciaWyeworkerIniciativa < ApplicationRecord
+  enum tipo: [ :source, :helper ]
   belongs_to :iniciativa
   belongs_to :wyeworker
 end

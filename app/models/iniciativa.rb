@@ -19,4 +19,5 @@
 #  padre_id  (padre_id => iniciativas.id)
 #
 class Iniciativa < ApplicationRecord
+  enum status: [ :terminada, :en_progreso ]
 end
