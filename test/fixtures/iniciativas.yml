@@ -1,0 +1,21 @@
+# == Schema Information
+#
+# Table name: iniciativas
+#
+#  id          :integer          not null, primary key
+#  descripcion :string
+#  fechaInicio :date
+#  status      :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+one:
+  descripcion: MyString
+  status: 1
+  fechaInicio: 2024-07-10
+
+two:
+  descripcion: MyString
+  status: 1
+  fechaInicio: 2024-07-10
