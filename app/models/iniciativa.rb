@@ -20,4 +20,8 @@
 #
 class Iniciativa < ApplicationRecord
   enum status: [ :terminada, :en_progreso ]
+
+  has_many :pertenencia_wyeworker_iniciativas
+
+  validates :pertenencia_wyeworker_iniciativas, length: { minimum: 1 }
 end
