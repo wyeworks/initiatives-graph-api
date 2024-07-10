@@ -15,8 +15,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
     t.string "descripcion"
     t.integer "status"
     t.date "fechaInicio"
+    t.integer "padre_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["padre_id"], name: "index_iniciativas_on_padre_id"
   end
 
   create_table "pertenencia_wyeworker_iniciativas", force: :cascade do |t|
@@ -35,6 +37,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "iniciativas", "iniciativas", column: "padre_id"
   add_foreign_key "pertenencia_wyeworker_iniciativas", "iniciativas"
   add_foreign_key "pertenencia_wyeworker_iniciativas", "wyeworkers"
 end
