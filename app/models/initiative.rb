@@ -34,7 +34,7 @@ class Initiative < ApplicationRecord
     -> { where(kind: :source) },
     class_name: 'WyeworkerInitiativeBelonging'
   has_one :source,
-    ->(i) { where(wyeworker_initiative_belongings: { kind: :source }) },
+    ->() { where(wyeworker_initiative_belongings: { kind: :source }) },
     through: :source_initiative_belonging,
     :source => :wyeworker
 
