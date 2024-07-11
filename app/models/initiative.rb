@@ -38,6 +38,8 @@ class Initiative < ApplicationRecord
     through: :source_initiative_belonging,
     :source => :wyeworker
 
+  has_one :parent, class_name: 'Initiative', foreign_key: 'parent_id'
+
   validates :source, presence: true
   validates :title, presence: true
 end
