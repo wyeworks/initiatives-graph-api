@@ -21,13 +21,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
     t.index ["parent_id"], name: "index_initiatives_on_parent_id"
   end
 
-  create_table "wyeworker_initiative_belongings", force: :cascade do |t|
-    t.integer "tipo"
-    t.integer "iniciativa_id", null: false
+  create_table "wyeworker_initiative_belongings", primary_key: ["wyeworker_id", "initiative_id"], force: :cascade do |t|
+    t.string "kind"
+    t.integer "initiative_id", null: false
     t.integer "wyeworker_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["iniciativa_id"], name: "index_wyeworker_initiative_belongings_on_iniciativa_id"
+    t.index ["initiative_id"], name: "index_wyeworker_initiative_belongings_on_initiative_id"
     t.index ["wyeworker_id"], name: "index_wyeworker_initiative_belongings_on_wyeworker_id"
   end
 
@@ -38,6 +36,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
   end
 
   add_foreign_key "initiatives", "initiatives", column: "parent_id"
-  add_foreign_key "wyeworker_initiative_belongings", "iniciativas"
+  add_foreign_key "wyeworker_initiative_belongings", "initiatives"
   add_foreign_key "wyeworker_initiative_belongings", "wyeworkers"
 end
