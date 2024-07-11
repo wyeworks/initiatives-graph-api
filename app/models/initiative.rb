@@ -6,6 +6,7 @@
 #  description :string
 #  startdate   :date
 #  status      :integer
+#  title       :string           not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
@@ -38,4 +39,5 @@ class Initiative < ApplicationRecord
     :source => :wyeworker
 
   validates :source, presence: true
+  validates :title, presence: true
 end
