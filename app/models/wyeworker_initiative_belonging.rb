@@ -17,7 +17,7 @@
 #  wyeworker_id   (wyeworker_id => wyeworkers.id)
 #
 class WyeworkerInitiativeBelonging < ApplicationRecord
-  enum kind: { source: "source", helper: "helper" }, validate: true
+  enum :kind, source: "source", helper: "helper"
   belongs_to :initiative
   belongs_to :wyeworker
 end

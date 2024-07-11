@@ -19,9 +19,23 @@
 #  parent_id  (parent_id => initiatives.id)
 #
 class Initiative < ApplicationRecord
-  enum status: { finished: "finished", in_progress: "in_progress" }, validate: true
+  enum :status, finished: "finished", in_progress: "in_progress"
 
-  has_many :wyeworker_initiative_belongings
+  has_many :helper_initiative_belongings,
+    -> { where(kind: :helper) },
+    class_name: 'WyeworkerInitiativeBelonging'
+  has_many :helpers,
+    ->() { where(wyeworker_initiative_belongings: { kind: :helper }) },
+    through: :helper_initiative_belongings,
+    :source => :wyeworker
 
-  validates :wyeworker_initiative_belongings, length: { minimum: 1 }
+  has_one :source_initiative_belonging,
+    -> { where(kind: :source) },
+    class_name: 'WyeworkerInitiativeBelonging'
+  has_one :source,
+    ->(i) { where(wyeworker_initiative_belongings: { kind: :source }) },
+    through: :source_initiative_belonging,
+    :source => :wyeworker
+
+  validates :source, presence: true
 end

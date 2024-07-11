@@ -8,5 +8,6 @@
 #  updated_at :datetime         not null
 #
 class Wyeworker < ApplicationRecord
-  has_many :pertenencia_wyeworker_iniciativas
+  has_many :wyeworker_initiative_belongings
+  has_many :initiatives, through: :wyeworker_initiative_belonging
 end
