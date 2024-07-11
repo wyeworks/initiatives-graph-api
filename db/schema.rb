@@ -11,24 +11,24 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
-  create_table "iniciativas", force: :cascade do |t|
-    t.string "descripcion"
+  create_table "initiatives", force: :cascade do |t|
+    t.string "description"
     t.integer "status"
-    t.date "fechaInicio"
-    t.integer "padre_id"
+    t.date "startdate"
+    t.integer "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["padre_id"], name: "index_iniciativas_on_padre_id"
+    t.index ["parent_id"], name: "index_initiatives_on_parent_id"
   end
 
-  create_table "pertenencia_wyeworker_iniciativas", force: :cascade do |t|
+  create_table "wyeworker_initiative_belongings", force: :cascade do |t|
     t.integer "tipo"
     t.integer "iniciativa_id", null: false
     t.integer "wyeworker_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["iniciativa_id"], name: "index_pertenencia_wyeworker_iniciativas_on_iniciativa_id"
-    t.index ["wyeworker_id"], name: "index_pertenencia_wyeworker_iniciativas_on_wyeworker_id"
+    t.index ["iniciativa_id"], name: "index_wyeworker_initiative_belongings_on_iniciativa_id"
+    t.index ["wyeworker_id"], name: "index_wyeworker_initiative_belongings_on_wyeworker_id"
   end
 
   create_table "wyeworkers", force: :cascade do |t|
@@ -37,7 +37,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "iniciativas", "iniciativas", column: "padre_id"
-  add_foreign_key "pertenencia_wyeworker_iniciativas", "iniciativas"
-  add_foreign_key "pertenencia_wyeworker_iniciativas", "wyeworkers"
+  add_foreign_key "initiatives", "initiatives", column: "parent_id"
+  add_foreign_key "wyeworker_initiative_belongings", "iniciativas"
+  add_foreign_key "wyeworker_initiative_belongings", "wyeworkers"
 end
