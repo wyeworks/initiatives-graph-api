@@ -24,6 +24,7 @@ require 'rails_helper'
 RSpec.describe Initiative, type: :model do
   
   context 'in its entities,' do
+
       it 'may have helpers' do
 
         source = Wyeworker.new(name: "Source Pablo")
@@ -44,9 +45,11 @@ RSpec.describe Initiative, type: :model do
         initiative = Initiative.new(title: "Test Inititative", helpers: [helper])
 
         expect(initiative).to be_invalid
+
       end
 
       it 'may have a parent' do
+
         source = Wyeworker.new(name: "Source Pablo")
         initiative_no_parent = Initiative.new(title: "Test Inititative No Parent", source: source)
 
@@ -56,24 +59,29 @@ RSpec.describe Initiative, type: :model do
         initiative_with_parent = Initiative.new(title: "Test Inititative With Parent", source: source, parent: parent)
 
         expect(initiative_with_parent).to be_valid
+
       end
   end
   
   context 'when looking back from its entities,' do
 
-    it 'is one of the initiatives of its source' do
+    it 'is an initiative of its source' do
+
       source = Wyeworker.new(name: "Source Pablo")
       initiative = Initiative.create(title: "Test Inititative", source: source)
 
       expect(source.initiatives).to include(initiative)
+
     end
   
-    it 'is one of the initiatives of its helpers' do
+    it 'is an initiative of its helpers' do
+
       source = Wyeworker.new(name: "Source Pablo")
       helper = Wyeworker.new(name: "Helper Pedro")
       initiative = Initiative.create(title: "Test Inititative", source: source, helpers: [helper])
 
       expect(helper.initiatives).to include(initiative)
+
     end
   end
 
