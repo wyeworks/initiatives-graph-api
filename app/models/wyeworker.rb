@@ -9,7 +9,7 @@
 #
 class Wyeworker < ApplicationRecord
   has_many :wyeworker_initiative_belongings
-  has_many :initiatives, through: :wyeworker_initiative_belonging
+  has_many :initiatives, through: :wyeworker_initiative_belongings
 
   validates :name, presence: true
 end
