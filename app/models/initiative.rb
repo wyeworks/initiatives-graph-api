@@ -41,6 +41,8 @@ class Initiative < ApplicationRecord
   has_one :parent, class_name: 'Initiative', foreign_key: 'parent_id'
 
   validates :source, presence: true
-  validates :title, presence: true
   validates_with InitiativeHasManagerValidator
+  before_create do
+    self.title = self.title || "Anonymous initiative"
+  end
 end
