@@ -42,4 +42,5 @@ class Initiative < ApplicationRecord
 
   validates :source, presence: true
   validates :title, presence: true
+  validates_with InitiativeHasManagerValidator
 end
