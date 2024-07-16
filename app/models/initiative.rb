@@ -15,6 +15,7 @@
 # Indexes
 #
 #  index_initiatives_on_parent_id  (parent_id)
+#  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
@@ -42,6 +43,7 @@ class Initiative < ApplicationRecord
   has_one :parent, class_name: 'Initiative', foreign_key: 'parent_id'
 
   validates :source, presence: true
+  validates :title, presence: true, uniqueness: true
   validates_with InitiativeHasManagerValidator
   before_create do
     self.description = self.description || "No description"
