@@ -44,7 +44,17 @@ class Initiative < ApplicationRecord
 
   validates :source, presence: true
   validates :title, presence: true, uniqueness: true
-  validates_with InitiativeHasManagerValidator
+  validate :must_have_manager
+
+  def must_have_manager
+    if not (
+        source.is_a? Manager or
+        helpers.any? ->(h){ h.is_a? Manager }
+      )
+        errors.add :wyeworker_initiative_belongings, "An initiative must have a manager involved, as a source or as a helper"
+    end
+  end
+
   before_create do
     self.description = self.description || "No description"
   end
