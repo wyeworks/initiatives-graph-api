@@ -7,6 +7,7 @@
 #  startdate   :date
 #  status      :integer
 #  title       :string           not null
+#  type        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
@@ -43,6 +44,6 @@ class Initiative < ApplicationRecord
   validates :source, presence: true
   validates_with InitiativeHasManagerValidator
   before_create do
-    self.title = self.title || "Anonymous initiative"
+    self.description = self.description || "No description"
   end
 end
