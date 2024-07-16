@@ -8,14 +8,17 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-["Ana", "Pedro", "Jess", "Carlos", "Dani", "Juan", "Edu", "Facu", "Bob"].each do |wye_name|
+["Ana", "Pedro", "Carlos", "Dani", "Juan", "Edu", "Facu", "Bob"].each do |wye_name|
   Wyeworker.find_or_create_by!(name: wye_name)
 end
+
+Manager.find_or_create_by(name: "Jess")
+Manager.find_or_create_by(name: "Cholee")
 
 i = Initiative.new(title: "Juntada")
 i.source = Wyeworker.find_by(name: "Ana")
 i.helpers = [
-  Wyeworker.find_by(name: "Jess"),
+  Manager.find_by(name: "Jess"),
   Wyeworker.find_by(name: "Juan"),
   Wyeworker.find_by(name: "Edu"),
   Wyeworker.find_by(name: "Facu"),
@@ -28,7 +31,7 @@ i = Initiative.new(title: "JuntadaCeramica")
 i.parent = Initiative.find_by(title: "Juntada")
 i.source = Wyeworker.find_by(name: "Juan")
 i.helpers = [
-  Wyeworker.find_by(name: "Jess"),
+  Manager.find_by(name: "Jess"),
   Wyeworker.find_by(name: "Carlos"),
   Wyeworker.find_by(name: "Dani")
 ]
@@ -39,7 +42,8 @@ i.source = Wyeworker.find_by(name: "Bob")
 i.helpers = [
   Wyeworker.find_by(name: "Pedro"),
   Wyeworker.find_by(name: "Ana"),
-  Wyeworker.find_by(name: "Facu")
+  Wyeworker.find_by(name: "Facu"),
+  Manager.find_or_create_by(name: "Cholee")
 ]
 i.save!
 
