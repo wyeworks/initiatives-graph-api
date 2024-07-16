@@ -12,5 +12,7 @@ class Wyeworker < ApplicationRecord
   has_many :wyeworker_initiative_belongings
   has_many :initiatives, through: :wyeworker_initiative_belongings
 
-  validates :name, presence: true
+  before_create do
+    self.name = self.name || "Anonymous wyeworker"
+  end
 end
