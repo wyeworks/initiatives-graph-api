@@ -8,8 +8,9 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_wyeworkers_on_name  (name) UNIQUE
+#
 class Manager < Wyeworker
-  before_create do
-    self.name = self.name || "Anonymous manager"
-  end
 end
