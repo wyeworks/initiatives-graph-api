@@ -43,7 +43,7 @@ i.helpers = [
   Wyeworker.find_by(name: "Pedro"),
   Wyeworker.find_by(name: "Ana"),
   Wyeworker.find_by(name: "Facu"),
-  Manager.find_or_create_by(name: "Cholee")
+  Manager.find_by(name: "Cholee")
 ]
 i.save!
 
