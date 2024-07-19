@@ -1,0 +1,2 @@
+- break up factories en spec/factories/[modelo].rb
+- ponerle cascade on delete para los dos lados del join
