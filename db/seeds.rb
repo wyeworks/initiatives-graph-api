@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file should ensure the existence of records required to run the application in every environment (production,
 # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
@@ -8,7 +10,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-["Ana", "Pedro", "Carlos", "Dani", "Juan", "Edu", "Facu", "Bob"].each do |wye_name|
+%w[Ana Pedro Jess Carlos Dani Juan Edu Facu Bob].each do |wye_name|
   Wyeworker.find_or_create_by!(name: wye_name)
 end
 
@@ -46,4 +48,3 @@ i.helpers = [
   Manager.find_by(name: "Cholee")
 ]
 i.save!
-

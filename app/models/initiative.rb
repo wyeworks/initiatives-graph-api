@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: initiatives
@@ -25,22 +27,22 @@ class Initiative < ApplicationRecord
   enum :status, finished: "finished", in_progress: "in_progress"
 
   has_many :helper_initiative_belongings,
-    -> { where(kind: :helper) },
-    class_name: 'WyeworkerInitiativeBelonging'
+           -> { where(kind: :helper) },
+           class_name: "WyeworkerInitiativeBelonging"
   has_many :helpers,
-    ->() { where(wyeworker_initiative_belongings: { kind: :helper }) },
-    through: :helper_initiative_belongings,
-    :source => :wyeworker
+           -> { where(wyeworker_initiative_belongings: { kind: :helper }) },
+           through: :helper_initiative_belongings,
+           source: :wyeworker
 
   has_one :source_initiative_belonging,
-    -> { where(kind: :source) },
-    class_name: 'WyeworkerInitiativeBelonging'
+          -> { where(kind: :source) },
+          class_name: "WyeworkerInitiativeBelonging"
   has_one :source,
-    ->() { where(wyeworker_initiative_belongings: { kind: :source }) },
-    through: :source_initiative_belonging,
-    :source => :wyeworker
+          -> { where(wyeworker_initiative_belongings: { kind: :source }) },
+          through: :source_initiative_belonging,
+          source: :wyeworker
 
-  has_one :parent, class_name: 'Initiative', foreign_key: 'parent_id'
+  has_one :parent, class_name: "Initiative", foreign_key: "parent_id"
 
   validates :source, presence: true
   validates :title, presence: true, uniqueness: true
