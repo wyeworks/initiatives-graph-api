@@ -13,22 +13,4 @@ FactoryBot.define do
       parent { build :initiative }
     end
   end
-
-  factory :wyeworker do
-    name { "Test Wyeworker " }
-
-    factory :source do |_s|
-      after(:create) do |source|
-        FactoryBot.create(:initiative, source:)
-      end
-    end
-
-    factory :helper do |_s|
-      after(:create) do |helper|
-        FactoryBot.create(:initiative, helpers: [helper])
-      end
-    end
-
-    factory :manager
-  end
 end
