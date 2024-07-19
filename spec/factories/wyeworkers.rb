@@ -2,7 +2,9 @@
 
 FactoryBot.define do
   factory :wyeworker do
-    name { "Test Wyeworker " }
+    sequence :name do |n|
+      "Wyeworker-#{n}"
+    end
 
     factory :source do
       after(:create) do |source|
@@ -15,7 +17,5 @@ FactoryBot.define do
         FactoryBot.create(:initiative, helpers: [helper])
       end
     end
-
-    factory :manager
   end
 end
