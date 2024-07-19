@@ -19,32 +19,32 @@ Manager.find_or_create_by(name: "Cholee")
 
 i = Initiative.new(title: "Juntada")
 i.source = Wyeworker.find_by(name: "Ana")
-i.helpers = Wyeworker.where(name: [ # TODO: wheres para todos
-                              "Jess",
-                              "Juan",
-                              "Edu",
-                              "Facu",
-                              "Bob",
-                              "Pedro"
+i.helpers = Wyeworker.where(name: %w[
+                              Jess
+                              Juan
+                              Edu
+                              Facu
+                              Bob
+                              Pedro
                             ])
 i.save!
 
 i = Initiative.new(title: "JuntadaCeramica")
 i.parent = Initiative.find_by(title: "Juntada")
 i.source = Wyeworker.find_by(name: "Juan")
-i.helpers = [
-  Manager.find_by(name: "Jess"),
-  Wyeworker.find_by(name: "Carlos"),
-  Wyeworker.find_by(name: "Dani")
-]
+i.helpers = Wyeworker.where(name: %w[
+                              Jess
+                              Carlos
+                              Dani
+                            ])
 i.save!
 
 i = Initiative.new(title: "Libreria")
 i.source = Wyeworker.find_by(name: "Bob")
-i.helpers = [
-  Wyeworker.find_by(name: "Pedro"),
-  Wyeworker.find_by(name: "Ana"),
-  Wyeworker.find_by(name: "Facu"),
-  Manager.find_by(name: "Cholee")
-]
+i.helpers = Wyeworker.where(name: %w[
+                              Pedro
+                              Ana
+                              Facu
+                              Cholee
+                            ])
 i.save!
