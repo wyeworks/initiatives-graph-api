@@ -8,7 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-["Ana", "Pedro", "Carlos", "Dani", "Juan", "Edu", "Facu", "Bob"].each do |wye_name|
+%w[Ana Pedro Jess Carlos Dani Juan Edu Facu Bob].each do |wye_name|
   Wyeworker.find_or_create_by!(name: wye_name)
 end
 
@@ -17,14 +17,14 @@ Manager.find_or_create_by(name: "Cholee")
 
 i = Initiative.new(title: "Juntada")
 i.source = Wyeworker.find_by(name: "Ana")
-i.helpers = [
-  Manager.find_by(name: "Jess"),
-  Wyeworker.find_by(name: "Juan"),
-  Wyeworker.find_by(name: "Edu"),
-  Wyeworker.find_by(name: "Facu"),
-  Wyeworker.find_by(name: "Bob"),
-  Wyeworker.find_by(name: "Pedro")
-]
+i.helpers = Wyeworker.where(name: [ # TODO: wheres para todos
+                              "Jess",
+                              "Juan",
+                              "Edu",
+                              "Facu",
+                              "Bob",
+                              "Pedro"
+                            ])
 i.save!
 
 i = Initiative.new(title: "JuntadaCeramica")
@@ -46,4 +46,3 @@ i.helpers = [
   Manager.find_by(name: "Cholee")
 ]
 i.save!
-
