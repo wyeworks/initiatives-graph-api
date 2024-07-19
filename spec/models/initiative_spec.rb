@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: initiatives
@@ -19,41 +21,41 @@
 #
 #  parent_id  (parent_id => initiatives.id)
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Initiative, type: :model do
-  context 'in its entities,' do
-      it 'may have helpers' do
-        initiative_no_helpers = build(:initiative_no_helpers)
-        expect(initiative_no_helpers).to be_valid
+  context "in its entities," do
+    it "may have helpers" do
+      initiative_no_helpers = build(:initiative_no_helpers)
+      expect(initiative_no_helpers).to be_valid
 
-        initiative_with_helper = build(:initiative_with_helpers)
-        expect(initiative_with_helper).to be_valid
-      end
+      initiative_with_helper = build(:initiative_with_helpers)
+      expect(initiative_with_helper).to be_valid
+    end
 
-      it 'must have a source' do
-        initiative = build(:initiative, source: nil)
-        expect(initiative).to be_invalid
-      end
+    it "must have a source" do
+      initiative = build(:initiative, source: nil)
+      expect(initiative).to be_invalid
+    end
 
-      it 'may have a parent' do
-        initiative_no_parent = build(:initiative)
-        expect(initiative_no_parent).to be_valid
+    it "may have a parent" do
+      initiative_no_parent = build(:initiative)
+      expect(initiative_no_parent).to be_valid
 
-        initiative_with_parent = build(:initiative_with_parent)
-        expect(initiative_with_parent).to be_valid
-      end
+      initiative_with_parent = build(:initiative_with_parent)
+      expect(initiative_with_parent).to be_valid
+    end
   end
-  
-  context 'when looking back from its entities,' do
-    it 'is an initiative of its source' do
+
+  context "when looking back from its entities," do
+    it "is an initiative of its source" do
       initiative = create(:initiative)
       expect(initiative.source.initiatives).to include(initiative)
     end
-    it 'is an initiative of its helpers' do
+
+    it "is an initiative of its helpers" do
       initiative = create(:initiative_with_helpers)
       expect(initiative.helpers.first.initiatives).to include(initiative)
     end
   end
-
 end

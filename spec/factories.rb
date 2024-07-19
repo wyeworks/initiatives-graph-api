@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 
 FactoryBot.define do
-
-  factory :initiative, aliases: [:initiative_no_helpers, :initiative_no_parent] do
+  factory :initiative, aliases: %i[initiative_no_helpers initiative_no_parent] do
     title { "Test Initiative" }
 
     source { build :wyeworker }
@@ -12,19 +12,18 @@ FactoryBot.define do
     factory :initiative_with_parent do
       parent { build :initiative }
     end
-
   end
 
   factory :wyeworker do
-    name { "Test Wyeworker "}
+    name { "Test Wyeworker " }
 
-    factory :source do |s|
+    factory :source do |_s|
       after(:create) do |source|
         FactoryBot.create(:initiative, source:)
       end
     end
 
-    factory :helper do |s|
+    factory :helper do |_s|
       after(:create) do |helper|
         FactoryBot.create(:initiative, helpers: [helper])
       end
