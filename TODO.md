@@ -1,1 +1,0 @@
-- ponerle cascade on delete para los dos lados del join
