@@ -6,13 +6,13 @@ FactoryBot.define do
       "Wyeworker-#{n}"
     end
 
-    factory :source do
+    factory :wyeworker_source do
       after(:create) do |source|
         FactoryBot.create(:initiative, source:)
       end
     end
 
-    factory :helper do
+    factory :wyeworker_helper do
       after(:create) do |helper|
         FactoryBot.create(:initiative, helpers: [helper])
       end

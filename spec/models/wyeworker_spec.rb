@@ -12,17 +12,15 @@
 require "rails_helper"
 
 RSpec.describe Wyeworker, type: :model do
-  context "in its initiatives" do
-    it "can correctly take up the role of a source" do
-      source = create(:source)
+  it "wires up properly as a source" do
+    source = create(:wyeworker_source)
 
-      expect(source.wyeworker_initiative_belongings.first.kind).to eql("source")
-    end
+    expect(source.wyeworker_initiative_belongings.first.kind).to eql("source")
+  end
 
-    it "can correctly take up the role of a helper" do
-      helper = create(:helper)
+  it "wires up properly as a helper" do
+    helper = create(:wyeworker_helper)
 
-      expect(helper.wyeworker_initiative_belongings.first.kind).to eql("helper")
-    end
+    expect(helper.wyeworker_initiative_belongings.first.kind).to eql("helper")
   end
 end
