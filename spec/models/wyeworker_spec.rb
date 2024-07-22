@@ -18,14 +18,18 @@ require "rails_helper"
 
 RSpec.describe Wyeworker, type: :model do
   it "wires up properly as a source" do
-    source = create(:wyeworker_source)
+    source = create(:wyeworker)
+    i = create(:initiative)
+    i.source = source
 
-    expect(source.wyeworker_initiative_belongings.first.kind).to eql("source")
+    expect(source.wyeworker_initiative_belongings.sample.kind).to eql("source")
   end
 
   it "wires up properly as a helper" do
-    helper = create(:wyeworker_helper)
+    helpers = create_list(:wyeworker, 5)
+    i = create(:initiative)
+    i.helpers = helpers
 
-    expect(helper.wyeworker_initiative_belongings.first.kind).to eql("helper")
+    expect(helpers.sample.wyeworker_initiative_belongings.sample.kind).to eql("helper")
   end
 end
