@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UniqueNamesAndTitles < ActiveRecord::Migration[7.1]
   def change
     add_index :wyeworkers, :name, unique: true
