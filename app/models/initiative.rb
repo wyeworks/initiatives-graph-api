@@ -9,6 +9,7 @@
 #  startdate   :date
 #  status      :integer
 #  title       :string           not null
+#  type        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
@@ -16,6 +17,7 @@
 # Indexes
 #
 #  index_initiatives_on_parent_id  (parent_id)
+#  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
@@ -43,5 +45,20 @@ class Initiative < ApplicationRecord
   has_one :parent, class_name: "Initiative", foreign_key: "parent_id"
 
   validates :source, presence: true
-  validates :title, presence: true
+  validates :title, presence: true, uniqueness: true
+  validate :must_have_manager
+
+  def must_have_manager
+    if !(
+        source.is_a?(Manager) ||
+        helpers.any? { |h| h.is_a?(Manager) }
+      )
+      errors.add :wyeworker_initiative_belongings,
+                 "An initiative must have a manager involved, as a source or as a helper"
+    end
+  end
+
+  before_create do
+    self.description ||= "No description"
+  end
 end

@@ -14,9 +14,5 @@
 #
 #  index_wyeworkers_on_name  (name) UNIQUE
 #
-class Wyeworker < ApplicationRecord
-  has_many :wyeworker_initiative_belongings
-  has_many :initiatives, through: :wyeworker_initiative_belongings
-
-  validates :name, presence: true, uniqueness: true
+class Developer < Wyeworker
 end

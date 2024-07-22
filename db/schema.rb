@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_16_160432) do
   create_table "initiatives", force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
@@ -19,7 +19,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
     t.integer "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
     t.index ["parent_id"], name: "index_initiatives_on_parent_id"
+    t.index ["title"], name: "index_initiatives_on_title", unique: true
   end
 
   create_table "wyeworker_initiative_belongings", primary_key: ["wyeworker_id", "initiative_id"], force: :cascade do |t|
@@ -34,6 +36,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_143546) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
+    t.index ["name"], name: "index_wyeworkers_on_name", unique: true
   end
 
   add_foreign_key "initiatives", "initiatives", column: "parent_id"
