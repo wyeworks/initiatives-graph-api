@@ -18,33 +18,33 @@ Manager.find_or_create_by(name: "Jess")
 Manager.find_or_create_by(name: "Cholee")
 
 i = Initiative.new(title: "Juntada")
-i.source = Wyeworker.find_by(name: "Ana")
+i.source = Developer.find_by(name: "Ana")
 i.helpers = [
-  Wyeworker.find_by(name: "Jess"),
-  Wyeworker.find_by(name: "Juan"),
-  Wyeworker.find_by(name: "Edu"),
-  Wyeworker.find_by(name: "Facu"),
-  Wyeworker.find_by(name: "Bob"),
-  Wyeworker.find_by(name: "Pedro")
+  Manager.find_by(name: "Jess"),
+  Developer.find_by(name: "Juan"),
+  Developer.find_by(name: "Edu"),
+  Developer.find_by(name: "Facu"),
+  Developer.find_by(name: "Bob"),
+  Developer.find_by(name: "Pedro")
 ]
 i.save!
 
 i = Initiative.new(title: "JuntadaCeramica")
 i.parent = Initiative.find_by(title: "Juntada")
-i.source = Wyeworker.find_by(name: "Juan")
+i.source = Developer.find_by(name: "Juan")
 i.helpers = [
-  Wyeworker.find_by(name: "Jess"),
-  Wyeworker.find_by(name: "Carlos"),
-  Wyeworker.find_by(name: "Dani")
+  Manager.find_by(name: "Jess"),
+  Developer.find_by(name: "Carlos"),
+  Developer.find_by(name: "Dani")
 ]
 i.save!
 
 i = Initiative.new(title: "Libreria")
-i.source = Wyeworker.find_by(name: "Bob")
+i.source = Developer.find_by(name: "Bob")
 i.helpers = [
-  Wyeworker.find_by(name: "Pedro"),
-  Wyeworker.find_by(name: "Ana"),
-  Wyeworker.find_by(name: "Facu"),
-  Wyeworker.find_by(name: "Cholee")
+  Developer.find_by(name: "Pedro"),
+  Developer.find_by(name: "Ana"),
+  Developer.find_by(name: "Facu"),
+  Manager.find_by(name: "Cholee")
 ]
 i.save!
