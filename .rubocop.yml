@@ -5,3 +5,5 @@ require:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-rspec_rails
+Style/NegatedIf:
+  Enabled: false
