@@ -10,7 +10,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-%w[Ana Pedro Jess Carlos Dani Juan Edu Facu Bob].each do |wye_name|
+%w[Ana Pedro Carlos Dani Juan Edu Facu Bob].each do |wye_name|
   Wyeworker.find_or_create_by!(name: wye_name)
 end
 
