@@ -9,6 +9,7 @@
 #  startdate   :date
 #  status      :integer
 #  title       :string           not null
+#  type        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
@@ -16,6 +17,7 @@
 # Indexes
 #
 #  index_initiatives_on_parent_id  (parent_id)
+#  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #

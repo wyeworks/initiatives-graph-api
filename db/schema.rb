@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_716_160_432) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_16_160432) do
   create_table "initiatives", force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
@@ -26,7 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_716_160_432) do
     t.index ["title"], name: "index_initiatives_on_title", unique: true
   end
 
-  create_table "wyeworker_initiative_belongings", primary_key: %w[wyeworker_id initiative_id], force: :cascade do |t|
+  create_table "wyeworker_initiative_belongings", primary_key: ["wyeworker_id", "initiative_id"], force: :cascade do |t|
     t.string "kind"
     t.integer "initiative_id", null: false
     t.integer "wyeworker_id", null: false
