@@ -33,7 +33,7 @@ RSpec.describe Initiative, type: :model do
   end
 
   it "wires up as an initiative of its helpers" do
-    expect(initiative.helpers.first.initiatives).to include(initiative)
+    expect(initiative.helpers.sample.initiatives).to include(initiative)
   end
 
   it "is invalid without a manager" do
