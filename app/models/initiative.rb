@@ -58,6 +58,6 @@ class Initiative < ApplicationRecord
   end
 
   before_create do
-    self.description = description || "No description"
+    self.description ||= "No description"
   end
 end
