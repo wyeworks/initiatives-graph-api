@@ -49,9 +49,10 @@ class Initiative < ApplicationRecord
   validate :must_have_manager
 
   def must_have_manager
-    unless source.is_a?(Manager) ||
-           helpers.any? { |h| h.is_a?(Manager) }
-
+    if !(
+        source.is_a?(Manager) ||
+        helpers.any? { |h| h.is_a?(Manager) }
+      )
       errors.add :wyeworker_initiative_belongings,
                  "An initiative must have a manager involved, as a source or as a helper"
     end
