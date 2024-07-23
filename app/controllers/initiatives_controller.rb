@@ -3,10 +3,7 @@
 class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show update destroy]
 
-  def initialize
-    @outside_attributes = %w[title description startdate id]
-    super
-  end
+  EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
 
   def shallow_url_to_id(url)
     url.sub!(%r{.*/}, "")
@@ -22,7 +19,7 @@ class InitiativesController < ApplicationController
 
   def initiative_to_rep(initiative)
     {
-      **initiative.slice(*@outside_attributes),
+      **initiative.slice(*EXPOSED_PLAIN_ATTRIBUTES),
       source: wyeworker_to_url(initiative.source),
       helpers: initiative.helpers.map { |i| wyeworker_to_url i }
     }
@@ -54,7 +51,7 @@ class InitiativesController < ApplicationController
 
   # POST
   def create
-    initiative_params = params.require(:initiative).permit(*@outside_attributes)
+    initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
     helpers_urls = params[:helpers]
     source_url = params[:source]
 
@@ -70,7 +67,7 @@ class InitiativesController < ApplicationController
 
   # PATCH/PUT
   def update
-    initiative_params = params.require(:initiative).permit(*@outside_attributes)
+    initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
 
     if @initiative&.update(initiative_params)
       render_initiative @initiative
@@ -81,7 +78,7 @@ class InitiativesController < ApplicationController
 
   # DELETE
   def destroy
-    @initiative.destroy # TODO: need to add cascade
+    @initiative.destroy # TODO: need to add cascade for the join
   end
 
   private
