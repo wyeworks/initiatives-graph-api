@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :initiatives
+  resources :developers
+  resources :managers
 end

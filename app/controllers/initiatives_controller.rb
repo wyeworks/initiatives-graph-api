@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 class InitiativesController < ApplicationController
+  include RestJsonUtils
+
   before_action :set_initiative, only: %i[show update destroy]
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
-
-  def shallow_url_to_id(url)
-    url.sub!(%r{.*/}, "")
-  end
 
   def url_to_wyeworker(url)
     Wyeworker.find(shallow_url_to_id(url))
