@@ -7,14 +7,6 @@ class InitiativesController < ApplicationController
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
 
-  def url_to_wyeworker(url)
-    Wyeworker.find(shallow_url_to_id(url))
-  end
-
-  def wyeworker_to_url(wyeworker)
-    "#{wyeworker.is_a?(Manager) ? 'managers' : 'developers'}/#{wyeworker.id}"
-  end
-
   def initiative_to_rep(initiative)
     {
       **initiative.slice(*EXPOSED_PLAIN_ATTRIBUTES),

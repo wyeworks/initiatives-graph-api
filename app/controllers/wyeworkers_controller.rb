@@ -8,14 +8,23 @@ class WyeworkersController < ApplicationController
   EXPOSED_PLAIN_ATTRIBUTES = %w[name id].freeze
   WyeworkerKind = Wyeworker
 
+  def initiative_to_url(initiative)
+    "#initiatives/#{initiative.id}"
+  end
+
+  def url_to_initiative(url)
+    Initiative.find(shallow_url_to_id(url))
+  end
+
   def wyeworker_to_rep(wyeworker)
     {
-      **wyeworker.slice(*EXPOSED_PLAIN_ATTRIBUTES)
+      **wyeworker.slice(*EXPOSED_PLAIN_ATTRIBUTES),
+      initiatives: wyeworker.initiatives.map { |i| initiative_to_url(i) }
     }
   end
 
   def rep_to_wyeworker(rep)
-    self.class::WyeworkerKind.new(rep)
+    self.class::WyeworkerKind.new(rep, initiatives: rep.initiatives.map { |ri| url_to_initiative(ri) })
   end
 
   def render_wyeworker(wyeworker, **kwarguments)
@@ -49,6 +58,25 @@ class WyeworkersController < ApplicationController
   # PATCH/PUT
   def update
     wyeworker_params = params.require(self.class::WyeworkerKind.name.downcase.to_sym).permit(*EXPOSED_PLAIN_ATTRIBUTES)
+    initiatives_params = params.require(:initiatives)
+
+    initiatives_they_source = @wyeworker.wyeworker_initiative_belongings
+                                        .select { |ib| ib.kind == "source" }
+                                        .map(&:initiative)
+    initiatives_they_would_source = initiatives_params.map { |ri| url_to_initiative(ri) }
+    initiatives_they_would_still_source = initiatives_they_source & initiatives_they_would_source
+    initiatives_they_would_stop_sourcing = initiatives_they_source - initiatives_they_would_still_source
+
+    if initiatives_they_would_stop_sourcing.any?
+      return render json: "#{
+                              wyeworker_to_url(@wyeworker)
+                            } is currently the source for #{
+                                initiatives_they_would_stop_sourcing.map do |i|
+                                  initiative_to_url(i)
+                                end.join(' ')
+                              }.",
+                    status: :unprocessable_entity
+    end
 
     if @wyeworker&.update(wyeworker_params)
       render_wyeworker @wyeworker
