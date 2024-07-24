@@ -8,14 +8,6 @@ class WyeworkersController < ApplicationController
   EXPOSED_PLAIN_ATTRIBUTES = %w[name id].freeze
   WyeworkerKind = Wyeworker
 
-  def initiative_to_url(initiative)
-    "#initiatives/#{initiative.id}"
-  end
-
-  def url_to_initiative(url)
-    Initiative.find(shallow_url_to_id(url))
-  end
-
   def wyeworker_to_rep(wyeworker)
     {
       **wyeworker.slice(*EXPOSED_PLAIN_ATTRIBUTES),
