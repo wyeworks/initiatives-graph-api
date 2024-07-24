@@ -29,7 +29,7 @@ class Wyeworker < ApplicationRecord
       wb.kind == "source"
     end
 
-    return if sourced_initiative_belonging.nil?
+    return if !sourced_initiative_belonging.nil?
 
     raise ActiveRecord::RecordNotDestroyed,
           "Can't delete because it would leave #{sourced_initiative_belonging.initiative.title} without a source"
