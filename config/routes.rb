@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   resources :initiatives
   resources :developers
   resources :managers
+  resources :wyeworker_initiative_belongings
 end
