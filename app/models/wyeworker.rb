@@ -15,8 +15,23 @@
 #  index_wyeworkers_on_name  (name) UNIQUE
 #
 class Wyeworker < ApplicationRecord
-  has_many :wyeworker_initiative_belongings
+  before_destroy :cannot_destroy_if_source
+
+  has_many :wyeworker_initiative_belongings, dependent: :destroy
   has_many :initiatives, through: :wyeworker_initiative_belongings
 
   validates :name, presence: true, uniqueness: true
+
+  private
+
+  def cannot_destroy_if_source
+    sourced_initiative_belonging = wyeworker_initiative_belongings.find do |wb|
+      wb.kind == "source"
+    end
+
+    return if sourced_initiative_belonging.nil?
+
+    raise ActiveRecord::RecordNotDestroyed,
+          "Can't delete because it would leave #{sourced_initiative_belonging.initiative.title} without a source"
+  end
 end

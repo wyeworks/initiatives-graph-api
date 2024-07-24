@@ -76,7 +76,7 @@ class InitiativesController < ApplicationController
 
   # DELETE
   def destroy
-    @initiative.destroy # TODO: need to add cascade for the join
+    @initiative.destroy
   end
 
   private

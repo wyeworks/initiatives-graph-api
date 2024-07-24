@@ -15,8 +15,8 @@
 #
 # Foreign Keys
 #
-#  initiative_id  (initiative_id => initiatives.id)
-#  wyeworker_id   (wyeworker_id => wyeworkers.id)
+#  initiative_id  (initiative_id => initiatives.id) ON DELETE => cascade
+#  wyeworker_id   (wyeworker_id => wyeworkers.id) ON DELETE => cascade
 #
 class WyeworkerInitiativeBelonging < ApplicationRecord
   enum :kind, source: "source", helper: "helper"

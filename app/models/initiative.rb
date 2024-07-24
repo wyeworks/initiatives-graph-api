@@ -28,7 +28,8 @@ class Initiative < ApplicationRecord
 
   has_many :helper_initiative_belongings,
            -> { where(kind: :helper) },
-           class_name: "WyeworkerInitiativeBelonging"
+           class_name: "WyeworkerInitiativeBelonging",
+           dependent: :destroy
   has_many :helpers,
            -> { where(wyeworker_initiative_belongings: { kind: :helper }) },
            through: :helper_initiative_belongings,
@@ -36,7 +37,8 @@ class Initiative < ApplicationRecord
 
   has_one :source_initiative_belonging,
           -> { where(kind: :source) },
-          class_name: "WyeworkerInitiativeBelonging"
+          class_name: "WyeworkerInitiativeBelonging",
+          dependent: :destroy
   has_one :source,
           -> { where(wyeworker_initiative_belongings: { kind: :source }) },
           through: :source_initiative_belonging,

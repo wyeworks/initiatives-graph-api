@@ -59,7 +59,7 @@ class WyeworkersController < ApplicationController
 
   # DELETE
   def destroy
-    @wyeworker.destroy # TODO: el cascade
+    @wyeworker.destroy
   end
 
   private
