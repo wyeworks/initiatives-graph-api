@@ -58,8 +58,12 @@ class InitiativesController < ApplicationController
   # PATCH/PUT
   def update
     initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
+    helpers_urls = params[:helpers]
+    source_url = params[:source]
 
-    if @initiative&.update(initiative_params)
+    initiative_rep = { **initiative_params, source: source_url, helpers: helpers_urls }
+
+    if @initiative&.update(initiative_rep)
       render_initiative @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
