@@ -58,12 +58,12 @@ class WyeworkersController < ApplicationController
   # PATCH/PUT
   def update
     wyeworker_params = params.require(self.class::WyeworkerKind.name.downcase.to_sym).permit(*EXPOSED_PLAIN_ATTRIBUTES)
-    initiatives_param = params[:initiatives]
+    initiatives_urls = params[:initiatives]
 
     initiatives_they_source = @wyeworker.wyeworker_initiative_belongings
                                         .select { |ib| ib.kind == "source" }
                                         .map(&:initiative)
-    initiatives_they_would_source = initiatives_param.map { |ri| url_to_initiative(ri) }
+    initiatives_they_would_source = initiatives_urls.map { |ri| url_to_initiative(ri) }
     initiatives_they_would_still_source = initiatives_they_source & initiatives_they_would_source
     initiatives_they_would_stop_sourcing = initiatives_they_source - initiatives_they_would_still_source
 
@@ -78,7 +78,7 @@ class WyeworkersController < ApplicationController
                     status: :unprocessable_entity
     end
 
-    if @wyeworker&.update({ **wyeworker_params, initiatives: initiatives_param })
+    if @wyeworker&.update({ **wyeworker_params, initiatives: initiatives_they_would_source })
       render_wyeworker @wyeworker
     else
       render json: @wyeworker.errors, status: :unprocessable_entity
