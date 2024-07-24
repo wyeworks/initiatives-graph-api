@@ -45,11 +45,11 @@ class WyeworkerInitiativeBelongingsController < ApplicationController
     wib_wyeworker_param = params.require(:wyeworker)
     wib_initiative_param = params.require(:initiative)
 
-    @wib = WyeworkerInitiativeBelonging.new({
-                                              **wib_params,
-                                              wyeworker: url_to_wyeworker(wib_wyeworker_param),
-                                              initiative: url_to_initiative(wib_initiative_param)
-                                            })
+    @wib = rep_to_wib({
+                        **wib_params,
+                        wyeworker: wib_wyeworker_param,
+                        initiative: wib_initiative_param
+                      })
     if @wib.save
       render_wib @wib, status: :created, location: @wib
     else
