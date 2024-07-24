@@ -61,9 +61,9 @@ class InitiativesController < ApplicationController
     helpers_urls = params[:helpers]
     source_url = params[:source]
 
-    initiative_rep = { **initiative_params, source: source_url, helpers: helpers_urls }
-
-    if @initiative&.update(initiative_rep)
+    if @initiative&.update({ **initiative_params,
+                             helpers: helpers_urls.map { |rh| url_to_wyeworker(rh) },
+                             source: url_to_wyeworker(source_url) })
       render_initiative @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
