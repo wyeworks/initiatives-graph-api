@@ -12,7 +12,7 @@ module RestJsonUtils
   end
 
   def initiative_to_url(initiative)
-    "#initiatives/#{initiative.id}"
+    "initiatives/#{initiative.id}"
   end
 
   def url_to_initiative(url)
