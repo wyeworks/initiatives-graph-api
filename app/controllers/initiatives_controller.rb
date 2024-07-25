@@ -75,6 +75,11 @@ class InitiativesController < ApplicationController
     @initiative.destroy
   end
 
+  # POST /transfer/:wyeworker_id
+  def transfer
+    p "hola transfer #{params[:wyeworker_id]}"
+  end
+
   private
 
   def set_initiative

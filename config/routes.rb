@@ -10,7 +10,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  resources :initiatives
+  resources :initiatives do
+    member do
+      post "transfer/:wyeworker_id", to: "initiatives#transfer"
+    end
+  end
+
   resources :developers
   resources :managers
   resources :wyeworker_initiative_belongings
