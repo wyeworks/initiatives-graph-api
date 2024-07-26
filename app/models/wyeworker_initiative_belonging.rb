@@ -22,4 +22,16 @@ class WyeworkerInitiativeBelonging < ApplicationRecord
   enum :kind, source: "source", helper: "helper"
   belongs_to :initiative
   belongs_to :wyeworker
+
+  def kind=(_)
+    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+  end
+
+  def initiative=(_)
+    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+  end
+
+  def wyeworker=(_)
+    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+  end
 end

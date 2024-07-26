@@ -50,6 +50,10 @@ class Initiative < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validate :must_have_manager
 
+  def source=(_)
+    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+  end
+
   def must_have_manager
     if !(
         source.is_a?(Manager) ||

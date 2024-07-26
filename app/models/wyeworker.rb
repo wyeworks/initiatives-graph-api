@@ -22,6 +22,14 @@ class Wyeworker < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  def wyeworker_initiative_belongings=(_)
+    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+  end
+
+  def initiatives=(_)
+    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+  end
+
   private
 
   def cannot_destroy_if_source
