@@ -24,14 +24,20 @@ class WyeworkerInitiativeBelonging < ApplicationRecord
   belongs_to :wyeworker
 
   def kind=(_)
-    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].include?("activemodel")
+
+    super
   end
 
   def initiative=(_)
-    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].include?("activemodel")
+
+    super
   end
 
   def wyeworker=(_)
-    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].include?("activemodel")
+
+    super
   end
 end

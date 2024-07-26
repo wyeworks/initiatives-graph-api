@@ -51,7 +51,13 @@ class Initiative < ApplicationRecord
   validate :must_have_manager
 
   def source=(_)
-    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/transfer_to|activemodel/)
+
+    super
+  end
+
+  def transfer_to(new_source)
+    self.source = new_source
   end
 
   def must_have_manager

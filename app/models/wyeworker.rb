@@ -27,7 +27,9 @@ class Wyeworker < ApplicationRecord
   end
 
   def initiatives=(_)
-    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
+    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].include?("activemodel")
+
+    super
   end
 
   private
