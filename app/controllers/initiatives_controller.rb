@@ -3,7 +3,7 @@
 class InitiativesController < ApplicationController
   include RestJsonUtils
 
-  before_action :set_initiative, only: %i[show update destroy]
+  before_action :set_initiative, only: %i[show update destroy transfer]
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
 
@@ -77,7 +77,7 @@ class InitiativesController < ApplicationController
 
   # POST /transfer/:wyeworker_id
   def transfer
-    p "hola transfer #{params[:wyeworker_id]}"
+    @initiative.transfer_to(Wyeworker.find(params[:wyeworker_id]))
   end
 
   private
