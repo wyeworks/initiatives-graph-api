@@ -42,14 +42,10 @@ class WyeworkerInitiativeBelongingsController < ApplicationController
 
   # POST
   def create
-    wib_params = params.require(:wyeworker_initiative_belonging).permit(*EXPOSED_PLAIN_ATTRIBUTES)
-    wib_wyeworker_param = params.require(:wyeworker)
-    wib_initiative_param = params.require(:initiative)
-
     @wib = rep_to_wib({
-                        **wib_params,
-                        wyeworker: wib_wyeworker_param,
-                        initiative: wib_initiative_param
+                        **params.require(:wyeworker_initiative_belonging).permit(*EXPOSED_PLAIN_ATTRIBUTES),
+                        wyeworker: params.require(:wyeworker),
+                        initiative: params.require(:initiative)
                       })
     if @wib.save
       render_wib @wib, status: :created, location: @wib

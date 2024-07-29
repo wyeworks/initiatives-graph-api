@@ -47,7 +47,7 @@ class InitiativesController < ApplicationController
       source: params.require(:source),
       helpers: params.require(:helpers)
     }
-    initiative = rep_to_initiative(**initiative_params)
+    initiative = rep_to_initiative(initiative_params)
     if initiative.save
       render_initiative initiative, status: :created, location: initiative
     else
