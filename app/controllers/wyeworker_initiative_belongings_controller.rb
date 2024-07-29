@@ -20,7 +20,7 @@ class WyeworkerInitiativeBelongingsController < ApplicationController
     WyeworkerInitiativeBelonging.new(
       **rep,
       initiative: url_to_initiative(rep[:initiative]),
-      wyeworker: url_to_initiative(rep[:wyeworker])
+      wyeworker: url_to_wyeworker(rep[:wyeworker])
     )
   end
 

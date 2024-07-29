@@ -4,7 +4,7 @@ class WyeworkersController < ApplicationController
   include RestJsonUtils
 
   before_action :set_wyeworker, only: %i[show update destroy]
-  before_action :explain_no_source_editing, only: %i[create update]
+  before_action :explain_no_links_editing, only: %i[create update]
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[name id].freeze
   WyeworkerKind = Wyeworker
@@ -17,7 +17,7 @@ class WyeworkersController < ApplicationController
   end
 
   def rep_to_wyeworker(rep)
-    self.class::WyeworkerKind.new(rep, initiatives: rep.initiatives.map { |ri| url_to_initiative(ri) })
+    self.class::WyeworkerKind.new(rep)
   end
 
   def render_wyeworker(wyeworker, **kwarguments)
@@ -70,17 +70,12 @@ class WyeworkersController < ApplicationController
     @wyeworker = self.class::WyeworkerKind.find(params[:id])
   end
 
-  def explain_no_source_editing
-    set_wyeworker
-    initiatives_urls = params[:initiatives]
-    initiatives_they_source = @wyeworker.wyeworker_initiative_belongings
-                                        .select { |ib| ib.kind == "source" }
-                                        .map(&:initiative)
-    initiatives_they_would_source = initiatives_urls.map { |ri| url_to_initiative(ri) }
+  def explain_no_links_editing
+    return if params[:initiatives].nil?
 
-    return unless initiatives_they_source.length != initiatives_they_would_source.length
-
-    render json: "Use initiatives/:initiative_id/transfer_to/:wyeworker_id to give and revoke source status.",
-           status: :unprocessable_entity
+    render(
+      json: "Cannot set or update the initiatives of a wyeworker directly, must set or update linked entities instead.",
+      status: :unprocessable_entity
+    )
   end
 end

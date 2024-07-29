@@ -4,7 +4,7 @@ class InitiativesController < ApplicationController
   include RestJsonUtils
 
   before_action :set_initiative, only: %i[show update destroy transfer]
-  before_action :explain_no_source_editing, only: %i[create update]
+  before_action :explain_no_source_editing, only: %i[update]
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
 
@@ -42,8 +42,11 @@ class InitiativesController < ApplicationController
 
   # POST
   def create
-    initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
-
+    initiative_params = {
+      **params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES),
+      source: params.require(:source),
+      helpers: params.require(:helpers)
+    }
     initiative = rep_to_initiative(**initiative_params)
     if initiative.save
       render_initiative initiative, status: :created, location: initiative
@@ -82,7 +85,7 @@ class InitiativesController < ApplicationController
 
   def explain_no_source_editing
     source_url = params[:source]
-    return if source_url.is_nil?
+    return if source_url.nil?
 
     render json: "Use initiatives/:initiative_id/transfer_to/:wyeworker_id to change who is the source.",
            status: :unprocessable_entity
