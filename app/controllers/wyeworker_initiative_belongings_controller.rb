@@ -4,6 +4,7 @@ class WyeworkerInitiativeBelongingsController < ApplicationController
   include RestJsonUtils
 
   before_action :set_wib, only: %i[show destroy]
+  before_action :explain_no_source_editing, only: %i[create]
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[kind id].freeze
 
@@ -69,5 +70,14 @@ class WyeworkerInitiativeBelongingsController < ApplicationController
   def set_wib
     @wib_id = params.extract_value(:id)
     @wib = WyeworkerInitiativeBelonging.find(@wib_id)
+  end
+
+  def explain_no_source_editing
+    wib_params = params[:wyeworker_initiative_belonging]
+
+    return if wib_params[:kind] != "source"
+
+    render json: "Use initiatives/:initiative_id/transfer_to/:wyeworker_id to give and revoke source status.",
+           status: :unprocessable_entity
   end
 end
