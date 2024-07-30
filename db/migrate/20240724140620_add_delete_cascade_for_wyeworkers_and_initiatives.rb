@@ -3,7 +3,7 @@ class AddDeleteCascadeForWyeworkersAndInitiatives < ActiveRecord::Migration[7.1]
     reversible do |direction|
       change_table :wyeworker_initiative_belongings do
         direction.up do
-          drop_table :wyeworker_initiative_belongings,
+          drop_table :wyeworker_initiative_belongings, # Need to drop the whole table because annotate won't work otherwise
                      primary_key: %i[wyeworker_id initiative_id] do |t|
             t.string :kind
             t.belongs_to :initiative, null: false, foreign_key: true

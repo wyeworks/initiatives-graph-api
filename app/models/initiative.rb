@@ -72,6 +72,16 @@ class Initiative < ApplicationRecord
     }
   end
 
+  def source=(_)
+    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/transfer_to|activemodel/)
+
+    super
+  end
+
+  def transfer_to(new_source)
+    self.source = new_source
+  end
+
   def must_have_manager
     if !(
         source.is_a?(Manager) ||

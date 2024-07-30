@@ -3,7 +3,8 @@
 class InitiativesController < ApplicationController
   include RestJsonUtils
 
-  before_action :set_initiative, only: %i[show update destroy]
+  before_action :set_initiative, only: %i[show update destroy transfer]
+  before_action :explain_no_source_editing, only: %i[update]
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate parent_id id].freeze
 
@@ -41,12 +42,12 @@ class InitiativesController < ApplicationController
 
   # POST
   def create
-    initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
-    helpers_urls = params[:helpers]
-    source_url = params[:source]
-
-    initiative_rep = { **initiative_params, source: source_url, helpers: helpers_urls }
-    initiative = rep_to_initiative(initiative_rep)
+    initiative_params = {
+      **params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES),
+      source: params.require(:source),
+      helpers: params.require(:helpers)
+    }
+    initiative = rep_to_initiative(initiative_params)
     if initiative.save
       render_initiative initiative, status: :created, location: initiative
     else
@@ -57,12 +58,8 @@ class InitiativesController < ApplicationController
   # PATCH/PUT
   def update
     initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
-    helpers_urls = params[:helpers]
-    source_url = params[:source]
 
-    if @initiative&.update({ **initiative_params,
-                             helpers: helpers_urls.map { |rh| url_to_wyeworker(rh) },
-                             source: url_to_wyeworker(source_url) })
+    if @initiative&.update(**initiative_params)
       render_initiative @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
@@ -74,10 +71,23 @@ class InitiativesController < ApplicationController
     @initiative.destroy
   end
 
+  # POST /transfer/:wyeworker_id
+  def transfer
+    @initiative.transfer_to(Wyeworker.find(params[:wyeworker_id]))
+  end
+
   private
 
   def set_initiative
     @initiative_id = params[:id]
     @initiative = Initiative.find(@initiative_id)
+  end
+
+  def explain_no_source_editing
+    source_url = params[:source]
+    return if source_url.nil?
+
+    render json: "Use initiatives/:initiative_id/transfer_to/:wyeworker_id to change who is the source.",
+           status: :unprocessable_entity
   end
 end
