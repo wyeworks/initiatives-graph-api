@@ -27,7 +27,7 @@ class Wyeworker < ApplicationRecord
   end
 
   def initiatives=(_)
-    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].include?("activemodel")
+    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/activemodel|factory_bot/)
 
     super
   end

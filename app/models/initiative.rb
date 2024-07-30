@@ -73,7 +73,7 @@ class Initiative < ApplicationRecord
   end
 
   def source=(_)
-    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/transfer_to|activemodel/)
+    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/transfer_to|activemodel|factory_bot/)
 
     super
   end
