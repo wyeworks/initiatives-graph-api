@@ -24,6 +24,7 @@
 #  parent_id  (parent_id => initiatives.id)
 #
 class Initiative < ApplicationRecord
+  include RestJsonUtils
   enum :status, finished: "finished", in_progress: "in_progress"
 
   has_many :helper_initiative_belongings,
@@ -50,6 +51,27 @@ class Initiative < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validate :must_have_manager
 
+  before_create do
+    self.description ||= "No description"
+  end
+
+  def source_param
+    wyeworker_to_url(source)
+  end
+
+  def helpers_param
+    helpers.map { |h| wyeworker_to_url(h) }
+  end
+
+  def as_param
+    {
+      title:,
+      description:,
+      startdate:,
+      parent_id:
+    }
+  end
+
   def must_have_manager
     if !(
         source.is_a?(Manager) ||
@@ -58,9 +80,5 @@ class Initiative < ApplicationRecord
       errors.add :wyeworker_initiative_belongings,
                  "An initiative must have a manager involved, as a source or as a helper"
     end
-  end
-
-  before_create do
-    self.description ||= "No description"
   end
 end

@@ -5,7 +5,7 @@ class InitiativesController < ApplicationController
 
   before_action :set_initiative, only: %i[show update destroy]
 
-  EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
+  EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate parent_id id].freeze
 
   def initiative_to_rep(initiative)
     {
@@ -46,7 +46,6 @@ class InitiativesController < ApplicationController
     source_url = params[:source]
 
     initiative_rep = { **initiative_params, source: source_url, helpers: helpers_urls }
-
     initiative = rep_to_initiative(initiative_rep)
     if initiative.save
       render_initiative initiative, status: :created, location: initiative
