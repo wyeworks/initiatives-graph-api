@@ -31,11 +31,7 @@ FactoryBot.define do
 
     source { build :manager }
 
-    helpers { build_list(:wyeworker, 3) }
-
-    before(:create) do |initiative|
-      initiative.helpers << build(:manager)
-    end
+    helpers { build_list(:wyeworker, 3) << build(:manager) }
 
     factory :initiative_no_helpers do
       helpers { [] }
@@ -47,9 +43,7 @@ FactoryBot.define do
 
     factory :initiative_no_manager do
       source { build :wyeworker }
-      before(:create) do |initiative|
-        initiative.helpers = build_list(:wyeworker, 3)
-      end
+      helpers { build_list(:wyeworker, 3) }
     end
   end
 end
