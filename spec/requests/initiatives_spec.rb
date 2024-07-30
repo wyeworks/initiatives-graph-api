@@ -44,7 +44,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   end
 
   # transfer
-  it "deletes an initiative" do
+  it "transfers an initiative" do
     post "/initiatives/#{initiatives.first.id}/transfer/#{developer.id}"
     expect(response).to have_http_status(:no_content)
   end
