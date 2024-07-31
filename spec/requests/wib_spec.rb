@@ -41,8 +41,14 @@ RSpec.describe "Wyeworker Initiative Belonging Endpoint", type: :request do
   end
 
   # destroy
-  it "forbids deleting a source wyeworker initiative belonging" do
+  it "forbids deleting a WyeworkerInitiativeBelonging with source kind" do
     delete "/wyeworker_initiative_belongings/#{wib_ids_strings.first.join('_')}"
+    expect(response).to have_http_status(:unprocessable_content)
+  end
+
+  # destroy
+  it "deletes a WyeworkerInitiativeBelonging with helper kind" do
+    delete "/wyeworker_initiative_belongings/#{wib_ids_strings.last.join('_')}"
     expect(response).to have_http_status(:no_content)
   end
 end
