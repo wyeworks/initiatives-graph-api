@@ -59,13 +59,11 @@ class InitiativesController < ApplicationController
   def update
     initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
     helpers_urls = params[:helpers]
-    source_url = params[:source]
 
     if @initiative&.update(
       {
         **initiative_params,
-        helpers: helpers_urls&.map { |rh| url_to_wyeworker(rh) },
-        source: source_url && url_to_wyeworker(source_url)
+        helpers: helpers_urls&.map { |rh| url_to_wyeworker(rh) }
       }.compact
     )
       render_initiative @initiative
