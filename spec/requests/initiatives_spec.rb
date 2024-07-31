@@ -15,7 +15,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   # show
   it "singles out one initiative" do
     get "/initiatives/#{initiatives.first.id}"
-    expect(response.body).to include(initiatives[0].description)
+    expect(response.body).to include(initiatives.first.description)
   end
 
   # create
