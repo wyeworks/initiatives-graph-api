@@ -65,7 +65,7 @@ class WyeworkerInitiativeBelongingsController < ApplicationController
 
   def set_wib
     @wib_id = params.extract_value(:id)
-    return unless @wib_id
+    return if @wib_id.nil?
 
     @wib = WyeworkerInitiativeBelonging.find(@wib_id)
   end
