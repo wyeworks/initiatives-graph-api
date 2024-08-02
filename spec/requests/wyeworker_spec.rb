@@ -5,19 +5,16 @@
     let!(:wyeworkers) { create_list(wyeworker_kind.to_sym, 5) }
     let(:wyeworker_names) { wyeworkers.map(&:name) }
 
-    # index
     it "shows all #{wyeworker_kind.pluralize}" do
       get "/#{wyeworker_kind.pluralize}"
       expect(response.body).to include(*wyeworker_names)
     end
 
-    # show
     it "singles out one #{wyeworker_kind}" do
       get "/#{wyeworker_kind.pluralize}/#{wyeworkers.first.id}"
       expect(response.body).to include(wyeworkers.first.name)
     end
 
-    # create
     it "creates a #{wyeworker_kind}" do
       w = build(wyeworker_kind.to_sym)
 
@@ -26,7 +23,6 @@
       expect(response.body).to include(w.name)
     end
 
-    # update
     it "updates a #{wyeworker_kind}" do
       different_name = "A different initiative name"
 
@@ -36,7 +32,6 @@
       expect(response.body).to include(different_name)
     end
 
-    # destroy
     it "deletes a #{wyeworker_kind}" do
       delete "/#{wyeworker_kind.pluralize}/#{wyeworkers.first.id}"
       expect(response).to have_http_status(:no_content)
