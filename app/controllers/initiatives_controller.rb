@@ -6,7 +6,7 @@ class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show update destroy transfer]
   before_action :explain_no_source_editing, only: %i[update]
 
-  EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
+  EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate parent_id id].freeze
 
   def initiative_to_rep(initiative)
     {
@@ -58,8 +58,14 @@ class InitiativesController < ApplicationController
   # PATCH/PUT
   def update
     initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
+    helpers_urls = params[:helpers]
 
-    if @initiative&.update(**initiative_params)
+    if @initiative&.update(
+      {
+        **initiative_params,
+        helpers: helpers_urls&.map { |rh| url_to_wyeworker(rh) }
+      }.compact
+    )
       render_initiative @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
