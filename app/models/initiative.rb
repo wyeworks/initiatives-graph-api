@@ -50,8 +50,17 @@ class Initiative < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validate :must_have_manager
 
-  def transfer_to(new_source)
-    self.source = new_source
+  # def as_json
+  #   json = super
+  #   json.source = Wyeworker.find(json.source)
+  #   json.helpers = Wyeworker.where(id: json.helpers)
+  # end
+
+  def as_json
+    json = super
+    json[:source] = source.id
+    json[:helpers] = helpers.map(&:id)
+    json
   end
 
   def must_have_manager

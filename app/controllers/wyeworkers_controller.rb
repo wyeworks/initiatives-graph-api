@@ -9,31 +9,16 @@ class WyeworkersController < ApplicationController
   EXPOSED_PLAIN_ATTRIBUTES = %w[name id].freeze
   WyeworkerKind = Wyeworker
 
-  def wyeworker_to_rep(wyeworker)
-    {
-      **wyeworker.slice(*EXPOSED_PLAIN_ATTRIBUTES),
-      initiatives: wyeworker.initiatives.map { |i| initiative_to_url(i) }
-    }
-  end
-
   def rep_to_wyeworker(rep)
     self.class::WyeworkerKind.new(rep)
   end
 
-  def render_wyeworker(wyeworker, **kwarguments)
-    render json: wyeworker_to_rep(wyeworker), **kwarguments
-  end
-
-  def render_wyeworkers(wyeworkers, **kwarguments)
-    render json: wyeworkers.map { |i| wyeworker_to_rep i }, **kwarguments
-  end
-
   def index
-    render_wyeworkers self.class::WyeworkerKind.all
+    render json: self.class::WyeworkerKind.all
   end
 
   def show
-    render_wyeworker @wyeworker
+    render json: @wyeworker
   end
 
   # POST
@@ -42,7 +27,7 @@ class WyeworkersController < ApplicationController
 
     wyeworker = rep_to_wyeworker(wyeworker_rep)
     if wyeworker.save
-      render_wyeworker wyeworker, status: :created, location: wyeworker
+      render json: wyeworker, status: :created, location: wyeworker
     else
       render json: wyeworker.errors, status: :unprocessable_entity
     end
@@ -53,7 +38,7 @@ class WyeworkersController < ApplicationController
     wyeworker_params = params.require(self.class::WyeworkerKind.name.downcase.to_sym).permit(*EXPOSED_PLAIN_ATTRIBUTES)
 
     if @wyeworker&.update(**wyeworker_params)
-      render_wyeworker @wyeworker
+      render json: @wyeworker
     else
       render json: @wyeworker.errors, status: :unprocessable_entity
     end

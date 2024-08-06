@@ -8,14 +8,6 @@ class InitiativesController < ApplicationController
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
 
-  def initiative_to_rep(initiative)
-    {
-      **initiative.slice(*EXPOSED_PLAIN_ATTRIBUTES),
-      source: wyeworker_to_url(initiative.source),
-      helpers: initiative.helpers.map { |i| wyeworker_to_url i }
-    }
-  end
-
   def rep_to_initiative(rep)
     Initiative.new(
       **rep,
@@ -24,20 +16,12 @@ class InitiativesController < ApplicationController
     )
   end
 
-  def render_initiative(initiative, **kwarguments)
-    render json: initiative_to_rep(initiative), **kwarguments
-  end
-
-  def render_initiatives(initiatives, **kwarguments)
-    render json: initiatives.map { |i| initiative_to_rep i }, **kwarguments
-  end
-
   def index
-    render_initiatives Initiative.all
+    render json: Initiative.all
   end
 
   def show
-    render_initiative @initiative
+    render json: @initiative
   end
 
   # POST
@@ -49,7 +33,7 @@ class InitiativesController < ApplicationController
     }
     initiative = rep_to_initiative(initiative_params)
     if initiative.save
-      render_initiative initiative, status: :created, location: initiative
+      render json: initiative, status: :created, location: initiative
     else
       render json: initiative.errors, status: :unprocessable_entity
     end
@@ -60,7 +44,7 @@ class InitiativesController < ApplicationController
     initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
 
     if @initiative&.update(**initiative_params)
-      render_initiative @initiative
+      render @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end
