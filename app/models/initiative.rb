@@ -56,7 +56,7 @@ class Initiative < ApplicationRecord
   #   json.helpers = Wyeworker.where(id: json.helpers)
   # end
 
-  def as_json
+  def as_json(*_options)
     json = super
     json[:source] = source.id
     json[:helpers] = helpers.map(&:id)
