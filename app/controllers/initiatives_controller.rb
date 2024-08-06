@@ -8,11 +8,11 @@ class InitiativesController < ApplicationController
 
   EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
 
-  def rep_to_initiative(rep)
+  def representation_to_initiative(representation)
     Initiative.new(
-      **rep,
-      source: url_to_wyeworker(rep[:source]),
-      helpers: rep[:helpers].map { |rh| url_to_wyeworker(rh) }
+      **representation,
+      source: url_to_wyeworker(representation[:source]),
+      helpers: representation[:helpers].map { |rh| url_to_wyeworker(rh) }
     )
   end
 
@@ -31,7 +31,7 @@ class InitiativesController < ApplicationController
       source: params.require(:source),
       helpers: params.require(:helpers)
     }
-    initiative = rep_to_initiative(initiative_params)
+    initiative = representation_to_initiative(initiative_params)
     if initiative.save
       render json: initiative, status: :created, location: initiative
     else

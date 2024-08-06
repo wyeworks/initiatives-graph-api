@@ -9,8 +9,8 @@ class WyeworkersController < ApplicationController
   EXPOSED_PLAIN_ATTRIBUTES = %w[name id].freeze
   WyeworkerKind = Wyeworker
 
-  def rep_to_wyeworker(rep)
-    self.class::WyeworkerKind.new(rep)
+  def representation_to_wyeworker(representation)
+    self.class::WyeworkerKind.new(representation)
   end
 
   def index
@@ -23,9 +23,9 @@ class WyeworkersController < ApplicationController
 
   # POST
   def create
-    wyeworker_rep = params.require(self.class::WyeworkerKind.name.downcase.to_sym).permit(*EXPOSED_PLAIN_ATTRIBUTES)
+    wyeworker_representation = params.require(self.class::WyeworkerKind.name.downcase.to_sym).permit(*EXPOSED_PLAIN_ATTRIBUTES)
 
-    wyeworker = rep_to_wyeworker(wyeworker_rep)
+    wyeworker = representation_to_wyeworker(wyeworker_representation)
     if wyeworker.save
       render json: wyeworker, status: :created, location: wyeworker
     else
