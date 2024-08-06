@@ -50,12 +50,6 @@ class Initiative < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validate :must_have_manager
 
-  def source=(_)
-    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/transfer_to|activemodel/)
-
-    super
-  end
-
   def transfer_to(new_source)
     self.source = new_source
   end
