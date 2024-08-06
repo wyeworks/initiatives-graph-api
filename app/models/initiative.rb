@@ -75,11 +75,11 @@ class Initiative < ApplicationRecord
   def source=(_)
     raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/transfer_to|activemodel|factory_bot/)
 
-    super
-  end
-
-  def transfer_to(new_source)
-    self.source = new_source
+  def as_json
+    json = super
+    json[:source] = source.id
+    json[:helpers] = helpers.map(&:id)
+    json
   end
 
   def must_have_manager

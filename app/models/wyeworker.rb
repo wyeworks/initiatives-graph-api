@@ -22,14 +22,10 @@ class Wyeworker < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  def wyeworker_initiative_belongings=(_)
-    raise ActiveRecord::ReadOnlyRecord, USE_TRANSFER_INITIATIVE_MESSAGE
-  end
-
-  def initiatives=(_)
-    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/activemodel|factory_bot/)
-
-    super
+  def as_json
+    json = super
+    json[:initiatives] = initiatives.map(&:id)
+    json
   end
 
   private

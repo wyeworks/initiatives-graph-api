@@ -22,22 +22,4 @@ class WyeworkerInitiativeBelonging < ApplicationRecord
   enum :kind, source: "source", helper: "helper"
   belongs_to :initiative
   belongs_to :wyeworker
-
-  def kind=(_)
-    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/activemodel|factory_bot/)
-
-    super
-  end
-
-  def initiative=(_)
-    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/activemodel|factory_bot/)
-
-    super
-  end
-
-  def wyeworker=(_)
-    raise USE_TRANSFER_INITIATIVE_MESSAGE unless caller[0].match(/activemodel|factory_bot/)
-
-    super
-  end
 end
