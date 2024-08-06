@@ -72,7 +72,7 @@ class Initiative < ApplicationRecord
     }
   end
 
-  def as_json
+  def as_json(*_options)
     json = super
     json[:source] = source.id
     json[:helpers] = helpers.map(&:id)
