@@ -44,7 +44,7 @@ class InitiativesController < ApplicationController
     initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
 
     if @initiative&.update(**initiative_params)
-      render @initiative
+      render json: @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end
