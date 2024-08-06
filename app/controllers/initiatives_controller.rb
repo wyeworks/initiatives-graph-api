@@ -45,7 +45,7 @@ class InitiativesController < ApplicationController
     helpers_urls = params[:helpers]
 
     if @initiative&.update(**initiative_params)
-      render @initiative
+      render json: @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end
