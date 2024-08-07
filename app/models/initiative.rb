@@ -51,6 +51,10 @@ class Initiative < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validate :must_have_manager
 
+  before_create do
+    self.description ||= "No description"
+  end
+
   def as_json(*_options)
     json = super
     json[:source] = source.id
