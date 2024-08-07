@@ -22,7 +22,7 @@ class Wyeworker < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  def as_json
+  def as_json(*_options)
     json = super
     json[:initiatives] = initiatives.map(&:id)
     json

@@ -6,12 +6,7 @@ class WyeworkersController < ApplicationController
   before_action :set_wyeworker, only: %i[show update destroy]
   before_action :explain_no_links_editing, only: %i[create update]
 
-  EXPOSED_PLAIN_ATTRIBUTES = %w[name id].freeze
   WyeworkerKind = Wyeworker
-
-  def rep_to_wyeworker(rep)
-    self.class::WyeworkerKind.new(rep)
-  end
 
   def index
     render json: self.class::WyeworkerKind.all
@@ -23,9 +18,7 @@ class WyeworkersController < ApplicationController
 
   # POST
   def create
-    wyeworker_rep = params.require(self.class::WyeworkerKind.name.downcase.to_sym).permit(*EXPOSED_PLAIN_ATTRIBUTES)
-
-    wyeworker = rep_to_wyeworker(wyeworker_rep)
+    @wyeworker = self.class::WyeworkerKind.new(hydrated_params)
     if wyeworker.save
       render json: wyeworker, status: :created, location: wyeworker
     else
@@ -35,9 +28,7 @@ class WyeworkersController < ApplicationController
 
   # PATCH/PUT
   def update
-    wyeworker_params = params.require(self.class::WyeworkerKind.name.downcase.to_sym).permit(*EXPOSED_PLAIN_ATTRIBUTES)
-
-    if @wyeworker&.update(**wyeworker_params)
+    if @wyeworker&.update(wyeworker_params)
       render json: @wyeworker
     else
       render json: @wyeworker.errors, status: :unprocessable_entity
@@ -50,6 +41,14 @@ class WyeworkersController < ApplicationController
   end
 
   private
+
+  def hydrated_params
+    wyeworker_params = params
+                       .require(self.class::WyeworkerKind.name.downcase.to_sym)
+                       .permit(:name, :id, initiatives: [])
+    wyeworker_params[:initiatives] = Wyeworker.find(wyeworker_params[:initiatives])
+    wyeworker_params
+  end
 
   def set_wyeworker
     @wyeworker = self.class::WyeworkerKind.find(params[:id])
