@@ -18,7 +18,7 @@
     it "POST /#{wyeworker_kind.pluralize}" do
       w = build(wyeworker_kind.to_sym)
 
-      post "/#{wyeworker_kind.pluralize}", params: { wyeworker_kind => w.as_json }
+      post "/#{wyeworker_kind.pluralize}", params: w.as_json
       expect(response).to have_http_status(:created)
       expect(response.body).to include(w.name)
     end

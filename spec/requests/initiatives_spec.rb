@@ -17,18 +17,19 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   end
 
   it "POST /initiatives" do
-    i = build(:initiative, source: create(:manager), helpers: create_list(:wyeworker, 3))
+    initiative = build(:initiative, source: create(:manager), helpers: create_list(:wyeworker, 3))
 
-    post "/initiatives", params: { initiative: i.as_param, source: i.source_param, helpers: i.helpers_param }
+    post "/initiatives", params: initiative.as_json
     expect(response).to have_http_status(:created)
-    expect(response.body).to include(i.title)
+    expect(response.body).to include(initiative.title)
   end
 
   it "PUT /initiatives" do
     different_title = "A different initiative title"
+    initiative = create(:initiative)
+    initiative.title = different_title
 
-    put "/initiatives/#{initiatives.first.id}",
-        params: { initiative: { title: different_title } }
+    put "/initiatives/#{initiatives.first.id}", params: initiative.as_json
     expect(response).to have_http_status(:ok)
     expect(response.body).to include(different_title)
   end

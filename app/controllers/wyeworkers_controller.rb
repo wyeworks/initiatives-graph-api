@@ -45,7 +45,7 @@ class WyeworkersController < ApplicationController
                        .require(self.class::WyeworkerKind.name.downcase.to_sym)
                        .permit(:name, :id, initiatives: [])
     wyeworker_params[:initiatives] = Wyeworker.find(wyeworker_params[:initiatives])
-    wyeworker_params
+    wyeworker_params.except(:id)
   end
 
   def set_wyeworker

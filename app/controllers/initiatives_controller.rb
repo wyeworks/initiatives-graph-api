@@ -49,7 +49,7 @@ class InitiativesController < ApplicationController
                         .permit(%w[title description startdate parent_id source id], helpers: [])
     initiative_params[:source] = Wyeworker.find(initiative_params[:source])
     initiative_params[:helpers] = Wyeworker.find(initiative_params[:helpers])
-    initiative_params
+    initiative_params.except(:id)
   end
 
   def explain_no_source_editing
