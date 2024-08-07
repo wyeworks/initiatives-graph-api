@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class WyeworkersController < ApplicationController
-  include RestJsonUtils
-
   before_action :set_wyeworker, only: %i[show update destroy]
   before_action :explain_no_links_editing, only: %i[create update]
 

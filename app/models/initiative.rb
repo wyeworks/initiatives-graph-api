@@ -24,7 +24,6 @@
 #  parent_id  (parent_id => initiatives.id)
 #
 class Initiative < ApplicationRecord
-  include RestJsonUtils
   enum :status, finished: "finished", in_progress: "in_progress"
 
   has_many :helper_initiative_belongings,

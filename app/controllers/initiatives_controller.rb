@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class InitiativesController < ApplicationController
-  include RestJsonUtils
-
   before_action :set_initiative, only: %i[show destroy update]
   before_action :explain_no_source_editing, only: %i[update]
 
