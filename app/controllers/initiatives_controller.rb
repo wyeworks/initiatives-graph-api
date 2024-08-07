@@ -3,18 +3,8 @@
 class InitiativesController < ApplicationController
   include RestJsonUtils
 
-  before_action :set_initiative, only: %i[show update destroy transfer]
+  before_action :set_initiative, only: %i[show destroy update]
   before_action :explain_no_source_editing, only: %i[update]
-
-  EXPOSED_PLAIN_ATTRIBUTES = %w[title description startdate id].freeze
-
-  def rep_to_initiative(rep)
-    Initiative.new(
-      **rep,
-      source: url_to_wyeworker(rep[:source]),
-      helpers: rep[:helpers].map { |rh| url_to_wyeworker(rh) }
-    )
-  end
 
   def index
     render json: Initiative.all
@@ -26,24 +16,17 @@ class InitiativesController < ApplicationController
 
   # POST
   def create
-    initiative_params = {
-      **params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES),
-      source: params.require(:source),
-      helpers: params.require(:helpers)
-    }
-    initiative = rep_to_initiative(initiative_params)
-    if initiative.save
-      render json: initiative, status: :created, location: initiative
+    @initiative = Initiative.new(hydrated_params)
+    if @initiative.save
+      render json: @initiative, status: :created, location: @initiative
     else
-      render json: initiative.errors, status: :unprocessable_entity
+      render json: @initiative.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT
   def update
-    initiative_params = params.require(:initiative).permit(*EXPOSED_PLAIN_ATTRIBUTES)
-
-    if @initiative&.update(**initiative_params)
+    if @initiative.update(hydrated_params)
       render json: @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
@@ -55,16 +38,20 @@ class InitiativesController < ApplicationController
     @initiative.destroy
   end
 
-  # POST /transfer/:wyeworker_id
-  def transfer
-    @initiative.transfer_to(Wyeworker.find(params[:wyeworker_id]))
-  end
-
   private
 
   def set_initiative
     @initiative_id = params[:id]
     @initiative = Initiative.find(@initiative_id)
+  end
+
+  def hydrated_params
+    initiative_params = params
+                        .require(:initiative)
+                        .permit(%w[title description startdate parent_id source id], helpers: [])
+    initiative_params[:source] = Wyeworker.find(initiative_params[:source])
+    initiative_params[:helpers] = Wyeworker.find(initiative_params[:helpers])
+    initiative_params
   end
 
   def explain_no_source_editing
