@@ -34,7 +34,7 @@ FactoryBot.define do
     helpers { build_list(:wyeworker, 3) }
 
     before(:create) do |initiative|
-      initiative.helpers << build(:manager)
+      initiative.helpers << create(:manager)
     end
 
     factory :initiative_no_helpers do

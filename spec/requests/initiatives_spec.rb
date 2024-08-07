@@ -19,7 +19,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   it "creates an initiative" do
     i = build(:initiative, source: create(:manager), helpers: create_list(:wyeworker, 3))
 
-    post "/initiatives", params: { initiative: i.as_param, source: i.source_param, helpers: i.helpers_param }
+    post "/initiatives", params: {initiative: i.as_json}
     expect(response).to have_http_status(:created)
     expect(response.body).to include(i.title)
   end
