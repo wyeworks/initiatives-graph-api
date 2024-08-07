@@ -28,7 +28,7 @@ class WyeworkersController < ApplicationController
 
   # PATCH/PUT
   def update
-    if @wyeworker&.update(wyeworker_params)
+    if @wyeworker&.update(hydrated_params)
       render json: @wyeworker
     else
       render json: @wyeworker.errors, status: :unprocessable_entity
