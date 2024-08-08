@@ -20,7 +20,7 @@ require "rails_helper"
     it "POST /#{wyeworker_kind.pluralize}" do
       w = build(wyeworker_kind.to_sym)
 
-      post "/#{wyeworker_kind.pluralize}", params: w.as_json
+      post "/#{wyeworker_kind.pluralize}", params: w.as_json, as: :json
       expect(response).to have_http_status(:created)
       expect(response.body).to include(w.name)
     end
@@ -29,7 +29,8 @@ require "rails_helper"
       different_name = "A different initiative name"
 
       put "/#{wyeworker_kind.pluralize}/#{wyeworkers.first.id}",
-          params: { wyeworker_kind => { name: different_name } }
+          params: { wyeworker_kind => { name: different_name } },
+          as: :json
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(different_name)
     end
