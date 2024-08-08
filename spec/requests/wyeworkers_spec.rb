@@ -3,7 +3,7 @@ require "rails_helper"
 # frozen_string_literal: true
 
 %w[developer manager].each do |wyeworker_kind|
-  RSpec.describe "#{wyeworker_kind.titleize} Endpoint", type: :request do
+  RSpec.describe "#{wyeworker_kind.pluralize.titleize} Endpoint", type: :request do
     let!(:wyeworkers) { create_list(wyeworker_kind.to_sym, 5) }
     let(:wyeworker_names) { wyeworkers.map(&:name) }
 
