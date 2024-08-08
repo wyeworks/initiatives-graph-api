@@ -17,10 +17,10 @@ class WyeworkersController < ApplicationController
   # POST
   def create
     @wyeworker = self.class::WyeworkerKind.new(hydrated_params)
-    if wyeworker.save
-      render json: wyeworker, status: :created, location: wyeworker
+    if @wyeworker.save
+      render json: @wyeworker, status: :created, location: @wyeworker
     else
-      render json: wyeworker.errors, status: :unprocessable_entity
+      render json: @wyeworker.errors, status: :unprocessable_entity
     end
   end
 
@@ -44,7 +44,10 @@ class WyeworkersController < ApplicationController
     wyeworker_params = params
                        .require(self.class::WyeworkerKind.name.downcase.to_sym)
                        .permit(:name, :id, initiatives: [])
-    wyeworker_params[:initiatives] = Wyeworker.find(wyeworker_params[:initiatives])
+
+    initiative_ids = wyeworker_params[:initiatives]&.filter(&:present?)
+    wyeworker_params[:initiatives] = !initiative_ids.nil? ? Initiative.find(initiative_ids) : []
+
     wyeworker_params.except(:id)
   end
 

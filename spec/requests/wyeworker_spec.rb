@@ -1,3 +1,5 @@
+require "rails_helper"
+
 # frozen_string_literal: true
 
 %w[developer manager].each do |wyeworker_kind|

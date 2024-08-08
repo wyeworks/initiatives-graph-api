@@ -48,7 +48,9 @@ class InitiativesController < ApplicationController
                         .require(:initiative)
                         .permit(%w[title description startdate parent_id source id], helpers: [])
     initiative_params[:source] = Wyeworker.find(initiative_params[:source])
+
     initiative_params[:helpers] = Wyeworker.find(initiative_params[:helpers])
+
     initiative_params.except(:id)
   end
 
