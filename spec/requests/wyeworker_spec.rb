@@ -18,11 +18,11 @@ require "rails_helper"
     end
 
     it "POST /#{wyeworker_kind.pluralize}" do
-      w = build(wyeworker_kind.to_sym)
+      wyeworker = build(wyeworker_kind.to_sym)
 
-      post "/#{wyeworker_kind.pluralize}", params: w.as_json, as: :json
+      post "/#{wyeworker_kind.pluralize}", params: wyeworker.as_json, as: :json
       expect(response).to have_http_status(:created)
-      expect(response.body).to include(w.name)
+      expect(response.body).to include(wyeworker.name)
     end
 
     it "PUT /#{wyeworker_kind.pluralize}" do
