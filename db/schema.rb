@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_16_160432) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_24_140620) do
   create_table "initiatives", force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
@@ -41,6 +41,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_160432) do
   end
 
   add_foreign_key "initiatives", "initiatives", column: "parent_id"
-  add_foreign_key "wyeworker_initiative_belongings", "initiatives"
-  add_foreign_key "wyeworker_initiative_belongings", "wyeworkers"
+  add_foreign_key "wyeworker_initiative_belongings", "initiatives", on_delete: :cascade
+  add_foreign_key "wyeworker_initiative_belongings", "wyeworkers", on_delete: :cascade
 end
