@@ -13,15 +13,18 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
+#  source_id   :integer          not null
 #
 # Indexes
 #
 #  index_initiatives_on_parent_id  (parent_id)
+#  index_initiatives_on_source_id  (source_id)
 #  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
 #  parent_id  (parent_id => initiatives.id)
+#  source_id  (source_id => wyeworkers.id)
 #
 class Initiative < ApplicationRecord
   # enum :status, finished: "finished", in_progress: "in_progress"

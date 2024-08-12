@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 class SeparateSourceAndHelpersRel < ActiveRecord::Migration[7.1]
-  class WyeworkerInitiativeBelonging < ApplicationRecord
-    belongs_to :initiative
-    belongs_to :wyeworker
-  end
-
   def change
     reversible do |direction|
       direction.up do
@@ -14,28 +9,11 @@ class SeparateSourceAndHelpersRel < ActiveRecord::Migration[7.1]
                      primary_key: %i[helper_id initiative_id] do |t|
           t.references :initiative, null: false, foreign_key: { on_delete: :cascade }
           t.references :helper, null: false, foreign_key: { to_table: :wyeworkers, on_delete: :cascade }
-          t.timestamps default: -> { "CURRENT_TIMESTAMP" }
+          t.timestamps
         end
 
         # add source column
-        add_reference :initiatives, :source, foreign_key: { to_table: :wyeworkers }
-
-        # move source from weird table to source column
-        Initiative.all.find_each do |initiative|
-          initiative.source = WyeworkerInitiativeBelonging.find_by(initiative:).wyeworker
-        end
-
-        # make initiatives.source_id not null now that it has values
-        change_column_null :initiatives, :source_id, false
-
-        # move helper-initiative to helpers table
-        execute %{
-          INSERT INTO initiative_helpers
-          (initiative_id, helper_id)
-          SELECT initiative_id, wyeworker_id
-          FROM wyeworker_initiative_belongings
-          WHERE kind='helper'
-        }
+        add_reference :initiatives, :source, null: false, foreign_key: { to_table: :wyeworkers }
 
         # drop weird table
         drop_table :wyeworker_initiative_belongings
@@ -47,23 +25,8 @@ class SeparateSourceAndHelpersRel < ActiveRecord::Migration[7.1]
           t.string :kind
           t.belongs_to :initiative, null: false, foreign_key: { on_delete: :cascade }
           t.belongs_to :wyeworker, null: false, foreign_key: { on_delete: :cascade }
-          t.timestamps default: -> { "CURRENT_TIMESTAMP" }
+          t.timestamps
         end
-        # copy source to weird table
-        execute %{
-          INSERT INTO wyeworker_initiative_belongings
-          (initiative_id, wyeworker_id, kind)
-          SELECT id, source_id, 'source'
-          FROM initiatives
-        }
-
-        # copy helpers to weird table
-        execute %{
-          INSERT INTO wyeworker_initiative_belongings
-          (initiative_id, wyeworker_id, kind)
-          SELECT initiative_id, helper_id, 'helper'
-          FROM initiative_helpers
-        }
 
         # drop helpers table
         drop_table :initiative_helpers
