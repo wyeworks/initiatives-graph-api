@@ -1,4 +1,11 @@
+# frozen_string_literal: true
+
 class SeparateSourceAndHelpersRel < ActiveRecord::Migration[7.1]
+  class WyeworkerInitiativeBelonging < ApplicationRecord
+    belongs_to :initiative
+    belongs_to :wyeworker
+  end
+
   def change
     reversible do |direction|
       direction.up do
@@ -13,13 +20,10 @@ class SeparateSourceAndHelpersRel < ActiveRecord::Migration[7.1]
         # add source column
         add_reference :initiatives, :source, foreign_key: { to_table: :wyeworkers }
 
-        # move source to source column
-        execute "UPDATE initiatives "\
-                "SET source_id = (
-                  SELECT wyeworker_id
-                  FROM wyeworker_initiative_belongings
-                  WHERE kind='source' AND initiative_id=initiatives.id
-                );"
+        # move source from weird table to source column
+        Initiative.all.find_each do |initiative|
+          initiative.source = WyeworkerInitiativeBelonging.find_by(initiative:).wyeworker
+        end
 
         # make initiatives.source_id not null now that it has values
         change_column_null :initiatives, :source_id, false
