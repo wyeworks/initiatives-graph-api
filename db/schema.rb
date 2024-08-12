@@ -14,8 +14,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_125904) do
   create_table "initiative_helpers", primary_key: ["helper_id", "initiative_id"], force: :cascade do |t|
     t.integer "initiative_id", null: false
     t.integer "helper_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["helper_id"], name: "index_initiative_helpers_on_helper_id"
     t.index ["initiative_id"], name: "index_initiative_helpers_on_initiative_id"
   end

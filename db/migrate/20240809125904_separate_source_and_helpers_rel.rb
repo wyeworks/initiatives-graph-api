@@ -7,7 +7,7 @@ class SeparateSourceAndHelpersRel < ActiveRecord::Migration[7.1]
                      primary_key: %i[helper_id initiative_id] do |t|
           t.references :initiative, null: false, foreign_key: { on_delete: :cascade }
           t.references :helper, null: false, foreign_key: { to_table: :wyeworkers, on_delete: :cascade }
-          t.timestamps
+          t.timestamps default: -> { "CURRENT_TIMESTAMP" }
         end
 
         # add source column
@@ -26,18 +26,11 @@ class SeparateSourceAndHelpersRel < ActiveRecord::Migration[7.1]
 
         # move helper-initiative to helpers table
         execute %{
-          UPDATE initiative_helpers
-          SET initiative_id = (
-            SELECT initiative_id FROM wyeworker_initiative_belongings
-            WHERE kind='helper'
-          )
-        }
-        execute %{
-          UPDATE initiative_helpers
-          SET helper_id = (
-            SELECT wyeworker_id FROM wyeworker_initiative_belongings
-            WHERE kind='helper' AND initiative_id = initiative_id
-          )
+          INSERT INTO initiative_helpers
+          (initiative_id, helper_id)
+          SELECT initiative_id, wyeworker_id
+          FROM wyeworker_initiative_belongings
+          WHERE kind='helper'
         }
 
         # drop weird table
