@@ -43,12 +43,27 @@ class SeparateSourceAndHelpersRel < ActiveRecord::Migration[7.1]
           t.string :kind
           t.belongs_to :initiative, null: false, foreign_key: { on_delete: :cascade }
           t.belongs_to :wyeworker, null: false, foreign_key: { on_delete: :cascade }
-          t.timestamps
+          t.timestamps default: -> { "CURRENT_TIMESTAMP" }
         end
         # copy source to weird table
+        execute %{
+          INSERT INTO wyeworker_initiative_belongings
+          (initiative_id, wyeworker_id, kind)
+          SELECT id, source_id, 'source'
+          FROM initiatives
+        }
+
         # copy helpers to weird table
+        execute %{
+          INSERT INTO wyeworker_initiative_belongings
+          (initiative_id, wyeworker_id, kind)
+          SELECT initiative_id, helper_id, 'helper'
+          FROM initiative_helpers
+        }
+
         # drop helpers table
         drop_table :initiative_helpers
+
         # drop source column
         remove_column :initiatives, :source_id
       end
