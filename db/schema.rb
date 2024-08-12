@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_125904) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type"
-    t.integer "source_id"
+    t.integer "source_id", null: false
     t.index ["parent_id"], name: "index_initiatives_on_parent_id"
     t.index ["source_id"], name: "index_initiatives_on_source_id"
     t.index ["title"], name: "index_initiatives_on_title", unique: true

@@ -13,7 +13,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
-#  source_id   :integer
+#  source_id   :integer          not null
 #
 # Indexes
 #
