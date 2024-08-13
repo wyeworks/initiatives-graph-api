@@ -1,6 +1,6 @@
-require "rails_helper"
-
 # frozen_string_literal: true
+
+require "rails_helper"
 
 %w[developer manager].each do |wyeworker_kind|
   RSpec.describe "#{wyeworker_kind.pluralize.titleize} Endpoint", type: :request do
