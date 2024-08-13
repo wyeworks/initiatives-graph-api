@@ -4,15 +4,16 @@ require "rails_helper"
 
 %w[developer manager].each do |wyeworker_kind|
   RSpec.describe "#{wyeworker_kind.pluralize.titleize} Endpoint", type: :request do
-    let!(:wyeworkers) { create_list(wyeworker_kind.to_sym, 5) }
-    let(:wyeworker_names) { wyeworkers.map(&:name) }
+    let(:wyeworkers) { create_list(wyeworker_kind.to_sym, 5) }
 
     it "GET /#{wyeworker_kind.pluralize}" do
+      wyeworkers
       get "/#{wyeworker_kind.pluralize}"
       expect(response.body).to eq(wyeworkers.to_json)
     end
 
     it "GET /#{wyeworker_kind.pluralize}/:#{wyeworker_kind}_id" do
+      wyeworkers
       get "/#{wyeworker_kind.pluralize}/#{wyeworkers.first.id}"
       expect(response.body).to eq(wyeworkers.first.to_json)
     end

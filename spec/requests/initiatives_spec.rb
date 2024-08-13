@@ -3,17 +3,18 @@
 require "rails_helper"
 
 RSpec.describe "Initiatives Endpoint", type: :request do
-  let!(:initiatives) { create_list(:initiative, 5) }
+  let(:initiatives) { create_list(:initiative, 5) }
 
-  let(:initiative_titles) { initiatives.map(&:title) }
   let(:developer) { create(:wyeworker) }
 
   it "GET /initiatives" do
+    initiatives
     get "/initiatives"
     expect(response.body).to eq(initiatives.to_json)
   end
 
   it "GET /initiatives/:initiative_id" do
+    initiatives
     get "/initiatives/#{initiatives.first.id}"
     expect(response.body).to eq(initiatives.first.to_json)
   end
