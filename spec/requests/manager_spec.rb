@@ -1,0 +1,43 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe "Managers Endpoint", type: :request do
+  let(:managers) { create_list(:manager, 5) }
+  let(:manager) { create(:manager) }
+
+  it "GET /managers" do
+    managers
+    get managers_path
+    expect(response.body).to eq(managers.to_json)
+  end
+
+  it "GET /managers/:manager_id" do
+    managers
+    get manager_path(manager)
+    expect(response.body).to eq(manager.to_json)
+  end
+
+  it "POST /managers" do
+    manager = build(:manager)
+
+    post managers_path, params: manager.as_json, as: :json
+    expect(response).to have_http_status(:created)
+    expect(response.body).to include(manager.name)
+  end
+
+  it "PUT /managers" do
+    manager = create(:manager)
+    different_name = "A different manager name"
+    manager.name = different_name
+
+    put manager_path(manager), params: manager.as_json, as: :json
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include(different_name)
+  end
+
+  it "DELETE /managers/:manager_id" do
+    delete manager_path(manager)
+    expect(response).to have_http_status(:no_content)
+  end
+end

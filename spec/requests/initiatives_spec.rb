@@ -4,25 +4,26 @@ require "rails_helper"
 
 RSpec.describe "Initiatives Endpoint", type: :request do
   let(:initiatives) { create_list(:initiative, 5) }
+  let(:initiative) { create(:initiative) }
 
   let(:developer) { create(:wyeworker) }
 
   it "GET /initiatives" do
     initiatives
-    get "/initiatives"
+    get initiatives_path
     expect(response.body).to eq(initiatives.to_json)
   end
 
   it "GET /initiatives/:initiative_id" do
     initiatives
-    get "/initiatives/#{initiatives.first.id}"
-    expect(response.body).to eq(initiatives.first.to_json)
+    get initiative_path(initiative)
+    expect(response.body).to eq(initiative.to_json)
   end
 
   it "POST /initiatives" do
     initiative = build(:initiative, source: create(:manager), helpers: create_list(:wyeworker, 3))
 
-    post "/initiatives", params: initiative.as_json, as: :json
+    post initiatives_path, params: initiative.as_json, as: :json
     expect(response).to have_http_status(:created)
     # TODO: eq(initiative.to_json) doesnt work because of the description default value,
     # and the absence of an id before POSTing
@@ -34,13 +35,14 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiative = create(:initiative)
     initiative.title = different_title
 
-    put "/initiatives/#{initiatives.first.id}", params: initiative.as_json, as: :json
+    put initiative_path(initiative), params: initiative.as_json, as: :json
     expect(response).to have_http_status(:ok)
+    # TODO: expect to eq as json
     expect(response.body).to include(different_title)
   end
 
   it "DELETE /initiatives/:initiative_id" do
-    delete "/initiatives/#{initiatives.first.id}"
+    delete initiative_path(initiative)
     expect(response).to have_http_status(:no_content)
   end
 end
