@@ -43,10 +43,12 @@ class WyeworkersController < ApplicationController
   def hydrated_params
     wyeworker_params = params
                        .require(self.class::WyeworkerKind.name.downcase.to_sym)
-                       .permit(:name, :id, initiatives: [])
+                       .permit(:name, :id, sourced_initiatives: [], helped_initiatives: [])
 
-    initiative_ids = wyeworker_params[:initiatives]&.filter(&:present?)
-    wyeworker_params[:initiatives] = !initiative_ids.nil? ? Initiative.find(initiative_ids) : []
+    sourced_initiative_ids = wyeworker_params[:sourced_initiatives]&.filter(&:present?)
+    helped_initiative_ids = wyeworker_params[:helped_initiatives]&.filter(&:present?)
+    wyeworker_params[:sourced_initiatives] = sourced_initiative_ids.nil? ? [] : Initiative.find(sourced_initiative_ids)
+    wyeworker_params[:helped_initiatives] = helped_initiative_ids.nil? ? [] : Initiative.find(helped_initiative_ids)
 
     wyeworker_params.except(:id)
   end

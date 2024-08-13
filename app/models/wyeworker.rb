@@ -27,7 +27,8 @@ class Wyeworker < ApplicationRecord
 
   def as_json(...)
     json = super(...)
-    json[:initiatives] = initiatives.map(&:id)
+    json[:sourced_initiatives] = sourced_initiatives.map(&:id)
+    json[:helped_initiatives] = helped_initiatives.map(&:id)
     { self.class.name.downcase => json }
   end
 
