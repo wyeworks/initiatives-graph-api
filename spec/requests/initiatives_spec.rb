@@ -10,12 +10,12 @@ RSpec.describe "Initiatives Endpoint", type: :request do
 
   it "GET /initiatives" do
     get "/initiatives"
-    expect(response.body).to include(*initiative_titles)
+    expect(response.body).to eq(initiatives.to_json)
   end
 
   it "GET /initiatives/:initiative_id" do
     get "/initiatives/#{initiatives.first.id}"
-    expect(response.body).to include(initiatives.first.description)
+    expect(response.body).to eq(initiatives.first.to_json)
   end
 
   it "POST /initiatives" do
@@ -23,7 +23,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
 
     post "/initiatives", params: initiative.as_json, as: :json
     expect(response).to have_http_status(:created)
-    expect(response.body).to include(initiative.title)
+    expect(response.body).to eq(initiative.to_json)
   end
 
   it "PUT /initiatives" do

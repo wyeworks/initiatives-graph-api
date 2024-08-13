@@ -9,12 +9,12 @@ require "rails_helper"
 
     it "GET /#{wyeworker_kind.pluralize}" do
       get "/#{wyeworker_kind.pluralize}"
-      expect(response.body).to include(*wyeworker_names)
+      expect(response.body).to eq(wyeworkers.to_json)
     end
 
     it "GET /#{wyeworker_kind.pluralize}/:#{wyeworker_kind}_id" do
       get "/#{wyeworker_kind.pluralize}/#{wyeworkers.first.id}"
-      expect(response.body).to include(wyeworkers.first.name)
+      expect(response.body).to eq(wyeworkers.first.to_json)
     end
 
     it "POST /#{wyeworker_kind.pluralize}" do
