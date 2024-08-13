@@ -13,15 +13,18 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
+#  source_id   :integer          not null
 #
 # Indexes
 #
 #  index_initiatives_on_parent_id  (parent_id)
+#  index_initiatives_on_source_id  (source_id)
 #  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
 #  parent_id  (parent_id => initiatives.id)
+#  source_id  (source_id => wyeworkers.id)
 #
 FactoryBot.define do
   factory :initiative, aliases: %i[initiative_no_parent] do
@@ -31,11 +34,7 @@ FactoryBot.define do
 
     source { build :manager }
 
-    helpers { build_list(:wyeworker, 3) }
-
-    before(:create) do |initiative|
-      initiative.helpers << build(:manager)
-    end
+    helpers { build_list(:wyeworker, 3) << build(:manager) }
 
     factory :initiative_no_helpers do
       helpers { [] }
@@ -47,9 +46,7 @@ FactoryBot.define do
 
     factory :initiative_no_manager do
       source { build :wyeworker }
-      before(:create) do |initiative|
-        initiative.helpers = build_list(:wyeworker, 3)
-      end
+      helpers { build_list(:wyeworker, 3) }
     end
   end
 end

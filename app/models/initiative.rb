@@ -13,36 +13,28 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
+#  source_id   :integer          not null
 #
 # Indexes
 #
 #  index_initiatives_on_parent_id  (parent_id)
+#  index_initiatives_on_source_id  (source_id)
 #  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
 #  parent_id  (parent_id => initiatives.id)
+#  source_id  (source_id => wyeworkers.id)
 #
 class Initiative < ApplicationRecord
   enum :status, finished: "finished", in_progress: "in_progress"
 
-  has_many :helper_initiative_belongings,
-           -> { where(kind: :helper) },
-           class_name: "WyeworkerInitiativeBelonging",
-           dependent: :destroy
-  has_many :helpers,
-           -> { where(wyeworker_initiative_belongings: { kind: :helper }) },
-           through: :helper_initiative_belongings,
-           source: :wyeworker
+  has_and_belongs_to_many :helpers,
+                          association_foreign_key: :helper_id,
+                          join_table: :initiative_helpers,
+                          class_name: "Wyeworker"
 
-  has_one :source_initiative_belonging,
-          -> { where(kind: :source) },
-          class_name: "WyeworkerInitiativeBelonging",
-          dependent: :destroy
-  has_one :source,
-          -> { where(wyeworker_initiative_belongings: { kind: :source }) },
-          through: :source_initiative_belonging,
-          source: :wyeworker
+  belongs_to :source, dependent: :destroy, class_name: "Wyeworker"
 
   has_one :parent, class_name: "Initiative", foreign_key: "parent_id"
 
