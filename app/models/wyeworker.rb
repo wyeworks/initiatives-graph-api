@@ -15,10 +15,13 @@
 #  index_wyeworkers_on_name  (name) UNIQUE
 #
 class Wyeworker < ApplicationRecord
-  before_destroy :cannot_destroy_if_source
-
-  has_many :wyeworker_initiative_belongings, dependent: :destroy
-  has_many :initiatives, through: :wyeworker_initiative_belongings
+  has_many :sourced_initiatives,
+           foreign_key: :source_id,
+           class_name: "Initiative"
+  has_and_belongs_to_many :helped_initiatives,
+                          join_table: :initiative_helpers,
+                          foreign_key: :helper_id,
+                          class_name: "Initiative"
 
   validates :name, presence: true, uniqueness: true
 
