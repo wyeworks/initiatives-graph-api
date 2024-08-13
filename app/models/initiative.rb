@@ -27,7 +27,7 @@
 #  source_id  (source_id => wyeworkers.id)
 #
 class Initiative < ApplicationRecord
-  # enum :status, finished: "finished", in_progress: "in_progress"
+  enum :status, finished: "finished", in_progress: "in_progress"
 
   has_and_belongs_to_many :helpers,
                           association_foreign_key: :helper_id,
