@@ -46,10 +46,12 @@ class InitiativesController < ApplicationController
   def hydrated_params
     initiative_params = params
                         .require(:initiative)
-                        .permit(%w[title description startdate parent_id source id], helpers: [])
+                        .permit(%w[title description startdate parent source id], helpers: [])
     initiative_params[:source] = Wyeworker.find(initiative_params[:source])
 
-    initiative_params[:helpers] = Wyeworker.find(initiative_params[:helpers])
+    initiative_params[:helpers] &&= Wyeworker.find(initiative_params[:helpers])
+
+    initiative_params[:parent] &&= Initiative.find(initiative_params[:parent_id])
 
     initiative_params.except(:id)
   end

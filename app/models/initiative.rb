@@ -50,6 +50,7 @@ class Initiative < ApplicationRecord
     json = super
     json[:source] = source.id
     json[:helpers] = helpers.map(&:id)
+    json[:parent] = parent&.id
     { initiative: json }
   end
 

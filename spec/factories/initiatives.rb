@@ -32,19 +32,28 @@ FactoryBot.define do
       "Initiative-#{n}"
     end
 
+    sequence :description do |n|
+      "Initiative Description #{n}"
+    end
+
+    status { :in_progress }
+
     source { build :manager }
 
     helpers { build_list(:wyeworker, 3) << build(:manager) }
 
-    factory :initiative_no_helpers do
+    # TODO: Fix that initiatives with parent are troublesome
+    # parent { build(:initiative, :no_parent) }
+
+    trait :no_helpers do
       helpers { [] }
     end
 
-    factory :initiative_with_parent do
-      parent { build :initiative }
+    trait :no_parent do
+      parent { nil }
     end
 
-    factory :initiative_no_manager do
+    trait :no_manager do
       source { build :wyeworker }
       helpers { build_list(:wyeworker, 3) }
     end

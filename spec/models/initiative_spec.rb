@@ -42,16 +42,16 @@ RSpec.describe Initiative, type: :model do
   end
 
   it "is invalid without a manager" do
-    expect(build(:initiative_no_manager)).to be_invalid
+    expect(build(:initiative, :no_manager)).to be_invalid
   end
 
   context "with just one manager involved" do
     it "is valid with them being the source" do
-      expect(build(:initiative_no_manager, source: build(:manager))).to be_valid
+      expect(build(:initiative, :no_manager, source: build(:manager))).to be_valid
     end
 
     it "is valid with them being a helper" do
-      expect(build(:initiative_no_manager, helpers: build_list(:manager, 1))).to be_valid
+      expect(build(:initiative, :no_manager, helpers: build_list(:manager, 1))).to be_valid
     end
   end
 

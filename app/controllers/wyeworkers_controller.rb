@@ -45,10 +45,8 @@ class WyeworkersController < ApplicationController
                        .require(self.class::WyeworkerKind.name.downcase.to_sym)
                        .permit(:name, :id, sourced_initiatives: [], helped_initiatives: [])
 
-    sourced_initiative_ids = wyeworker_params[:sourced_initiatives]&.filter(&:present?)
-    helped_initiative_ids = wyeworker_params[:helped_initiatives]&.filter(&:present?)
-    wyeworker_params[:sourced_initiatives] = sourced_initiative_ids.nil? ? [] : Initiative.find(sourced_initiative_ids)
-    wyeworker_params[:helped_initiatives] = helped_initiative_ids.nil? ? [] : Initiative.find(helped_initiative_ids)
+    wyeworker_params[:sourced_initiatives] &&= Initiative.find(wyeworker_params[:sourced_initiatives])
+    wyeworker_params[:helped_initiatives] &&= Initiative.find(wyeworker_params[:helped_initiatives])
 
     wyeworker_params.except(:id)
   end
