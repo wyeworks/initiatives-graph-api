@@ -37,7 +37,8 @@ RSpec.describe "Initiatives Endpoint", type: :request do
 
     put initiative_path(initiative), params: initiative.as_json, as: :json
     expect(response).to have_http_status(:ok)
-    # TODO: expect to eq as json
+    # TODO: cannot expect response.body to equal initiative.as_json,
+    # because the attributes are coming in in a different order?
     expect(response.body).to include(different_title)
   end
 
