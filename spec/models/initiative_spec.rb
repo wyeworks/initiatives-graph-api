@@ -1,6 +1,6 @@
-require "rails_helper"
-
 # frozen_string_literal: true
+
+require "rails_helper"
 
 # == Schema Information
 #
@@ -28,30 +28,31 @@ require "rails_helper"
 #  parent_id  (parent_id => initiatives.id)
 #  source_id  (source_id => wyeworkers.id)
 #
-require "rails_helper"
 
 RSpec.describe Initiative, type: :model do
   let(:initiative) { create(:initiative) }
+  let(:initiative_with_helpers) { create(:initiative, :with_helpers) }
 
   it "wires up as an initiative of its source" do
     expect(initiative.source.sourced_initiatives).to include(initiative)
   end
 
   it "wires up as an initiative of its helpers" do
-    expect(initiative.helpers.sample.helped_initiatives).to include(initiative)
+    expect(initiative_with_helpers.helpers.sample.helped_initiatives).to include(initiative_with_helpers)
   end
 
   it "is invalid without a manager" do
-    expect(build(:initiative, :no_manager)).to be_invalid
+    initiative_no_manager = build(:initiative, source: build(:developer))
+    expect(initiative_no_manager).to be_invalid
   end
 
   context "with just one manager involved" do
     it "is valid with them being the source" do
-      expect(build(:initiative, :no_manager, source: build(:manager))).to be_valid
+      expect(build(:initiative, source: build(:manager), helpers: [])).to be_valid
     end
 
     it "is valid with them being a helper" do
-      expect(build(:initiative, :no_manager, helpers: build_list(:manager, 1))).to be_valid
+      expect(build(:initiative, source: build(:developer), helpers: [build(:manager)])).to be_valid
     end
   end
 

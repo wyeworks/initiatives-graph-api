@@ -10,12 +10,13 @@ RSpec.describe "Initiatives Endpoint", type: :request do
 
   it "GET /initiatives" do
     initiatives
+    all_db_initiatives = Initiative.all
     get initiatives_path
-    expect(response.body).to eq(initiatives.to_json(include: {
-                                                      helpers: { only: [:id] },
-                                                      source: { only: [:id] },
-                                                      parent: { only: [:id] }
-                                                    }))
+    expect(response.body).to eq(all_db_initiatives.to_json(include: {
+                                                             helpers: { only: [:id] },
+                                                             source: { only: [:id] },
+                                                             parent: { only: [:id] }
+                                                           }))
   end
 
   it "GET /initiatives/:initiative_id" do

@@ -40,20 +40,15 @@ FactoryBot.define do
 
     source { build :manager }
 
-    helpers { build_list(:wyeworker, 3) << build(:manager) }
-
-    # TODO: Fix that initiatives with parent are troublesome
-    # parent { build(:initiative, :no_parent) }
-
-    trait :no_helpers do
-      helpers { [] }
+    trait :with_helpers do
+      helpers { build_list(:wyeworker, 3) << build(:manager) }
     end
 
-    trait :no_parent do
-      parent { nil }
+    trait :with_parent do
+      parent { build(:initiative) }
     end
 
-    trait :no_manager do
+    trait :with_helpers_no_manager do
       source { build :wyeworker }
       helpers { build_list(:wyeworker, 3) }
     end
