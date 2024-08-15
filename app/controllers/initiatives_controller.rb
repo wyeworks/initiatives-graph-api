@@ -53,6 +53,6 @@ class InitiativesController < ApplicationController
   def initiative_params
     params
       .require(:initiative)
-      .permit(%w[title description startdate source_id parent_id])
+      .permit(:title, :description, :startdate, :source_id, :parent_id)
   end
 end
