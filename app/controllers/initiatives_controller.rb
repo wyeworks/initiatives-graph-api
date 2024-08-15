@@ -21,7 +21,7 @@ class InitiativesController < ApplicationController
 
   # POST
   def create
-    @initiative = Initiative.new(hydrated_params)
+    @initiative = Initiative.new(initiative_params)
     if @initiative.save
       render json: @initiative, status: :created, location: @initiative
     else
@@ -31,7 +31,7 @@ class InitiativesController < ApplicationController
 
   # PATCH/PUT
   def update
-    if @initiative.update(hydrated_params)
+    if @initiative.update(initiative_params)
       render json: @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
@@ -50,18 +50,9 @@ class InitiativesController < ApplicationController
     @initiative = Initiative.find(@initiative_id)
   end
 
-  def hydrated_params
-    # debugger
-    initiative_params = params
-                        .permit(%w[title description startdate id], helpers: [:id], source: [:id], parent: [:id])
-                        .except(:id)
-
-    initiative_params[:source] &&= Wyeworker.find(initiative_params[:source][:id])
-
-    initiative_params[:helpers] &&= Wyeworker.find(initiative_params[:helpers].map { |helper| helper[:id] })
-
-    initiative_params[:parent] &&= Initiative.find(initiative_params[:parent[:id]])
-
-    initiative_params.except(:id)
+  def initiative_params
+    params
+      .require(:initiative)
+      .permit(%w[title description startdate source_id parent_id])
   end
 end
