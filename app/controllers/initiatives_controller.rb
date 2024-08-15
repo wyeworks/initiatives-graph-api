@@ -2,7 +2,6 @@
 
 class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show destroy update]
-  before_action :explain_no_source_editing, only: %i[update]
 
   def index
     render json: Initiative.all
@@ -45,22 +44,15 @@ class InitiativesController < ApplicationController
 
   def hydrated_params
     initiative_params = params
-                        .require(:initiative)
-                        .permit(%w[title description startdate parent source id], helpers: [])
-    initiative_params[:source] = Wyeworker.find(initiative_params[:source])
+                        .permit(%w[title description startdate id], helpers: [:id], source: [:id], parent: [:id])
+                        .except(:id)
 
-    initiative_params[:helpers] &&= Wyeworker.find(initiative_params[:helpers])
+    initiative_params[:source] &&= Wyeworker.find(initiative_params[:source][:id])
 
-    initiative_params[:parent] &&= Initiative.find(initiative_params[:parent_id])
+    initiative_params[:helpers] &&= Wyeworker.find(initiative_params[:helpers].map { |h| h[:id] })
+
+    initiative_params[:parent] &&= Initiative.find(initiative_params[:parent[:id]])
 
     initiative_params.except(:id)
-  end
-
-  def explain_no_source_editing
-    source_url = params[:source]
-    return if source_url.nil?
-
-    render json: "Use initiatives/:initiative_id/transfer_to/:wyeworker_id to change who is the source.",
-           status: :unprocessable_entity
   end
 end

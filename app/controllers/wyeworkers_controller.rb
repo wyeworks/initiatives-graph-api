@@ -2,7 +2,6 @@
 
 class WyeworkersController < ApplicationController
   before_action :set_wyeworker, only: %i[show update destroy]
-  before_action :explain_no_links_editing, only: %i[create update]
 
   WyeworkerKind = Wyeworker
 
@@ -53,14 +52,5 @@ class WyeworkersController < ApplicationController
 
   def set_wyeworker
     @wyeworker = self.class::WyeworkerKind.find(params[:id])
-  end
-
-  def explain_no_links_editing
-    return if params[:initiatives].nil?
-
-    render(
-      json: "Cannot set or update the initiatives of a wyeworker directly, must set or update linked entities instead.",
-      status: :unprocessable_entity
-    )
   end
 end
