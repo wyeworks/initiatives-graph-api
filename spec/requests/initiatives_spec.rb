@@ -11,19 +11,31 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   it "GET /initiatives" do
     initiatives
     get initiatives_path
-    expect(response.body).to eq(initiatives.to_json)
+    expect(response.body).to eq(initiatives.to_json(include: {
+                                                      helpers: { only: [:id] },
+                                                      source: { only: [:id] },
+                                                      parent: { only: [:id] }
+                                                    }))
   end
 
   it "GET /initiatives/:initiative_id" do
     initiatives
     get initiative_path(initiative)
-    expect(response.body).to eq(initiative.to_json)
+    expect(response.body).to eq(initiative.to_json(include: {
+                                                     helpers: { only: [:id] },
+                                                     source: { only: [:id] },
+                                                     parent: { only: [:id] }
+                                                   }))
   end
 
   it "POST /initiatives" do
     initiative = build(:initiative, source: create(:manager), helpers: create_list(:wyeworker, 3))
 
-    post initiatives_path, params: initiative.as_json, as: :json
+    post initiatives_path, params: initiative.as_json(include: {
+                                                        helpers: { only: [:id] },
+                                                        source: { only: [:id] },
+                                                        parent: { only: [:id] }
+                                                      }), as: :json
     expect(response).to have_http_status(:created)
     # TODO: eq(initiative.to_json) doesnt work because of the description default value,
     # and the absence of an id before POSTing
@@ -35,7 +47,11 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiative = create(:initiative)
     initiative.title = different_title
 
-    put initiative_path(initiative), params: initiative.as_json, as: :json
+    put initiative_path(initiative), params: initiative.as_json(include: {
+                                                                  helpers: { only: [:id] },
+                                                                  source: { only: [:id] },
+                                                                  parent: { only: [:id] }
+                                                                }), as: :json
     expect(response).to have_http_status(:ok)
     # TODO: cannot expect response.body to equal initiative.as_json,
     # because the attributes are coming in in a different order?

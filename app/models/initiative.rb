@@ -46,16 +46,6 @@ class Initiative < ApplicationRecord
     self.description ||= "No description"
   end
 
-  def as_json(*_args, **kwargs)
-    kwargs[:include] = {
-      helpers: { only: [:id] },
-      source: { only: [:id] },
-      parent: { only: [:id] }
-    }
-    # TODO: cannot use *args in super call, sometimes as_json is called with value arguments?
-    super(**kwargs)
-  end
-
   def must_have_manager
     if !(
         source.is_a?(Manager) ||

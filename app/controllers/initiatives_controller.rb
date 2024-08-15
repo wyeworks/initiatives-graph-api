@@ -4,11 +4,19 @@ class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show destroy update]
 
   def index
-    render json: Initiative.all
+    render json: Initiative.all.as_json(include: {
+                                          helpers: { only: [:id] },
+                                          source: { only: [:id] },
+                                          parent: { only: [:id] }
+                                        })
   end
 
   def show
-    render json: @initiative
+    render json: @initiative.as_json(include: {
+                                       helpers: { only: [:id] },
+                                       source: { only: [:id] },
+                                       parent: { only: [:id] }
+                                     })
   end
 
   # POST
@@ -43,13 +51,14 @@ class InitiativesController < ApplicationController
   end
 
   def hydrated_params
+    # debugger
     initiative_params = params
                         .permit(%w[title description startdate id], helpers: [:id], source: [:id], parent: [:id])
                         .except(:id)
 
     initiative_params[:source] &&= Wyeworker.find(initiative_params[:source][:id])
 
-    initiative_params[:helpers] &&= Wyeworker.find(initiative_params[:helpers].map { |h| h[:id] })
+    initiative_params[:helpers] &&= Wyeworker.find(initiative_params[:helpers].map { |helper| helper[:id] })
 
     initiative_params[:parent] &&= Initiative.find(initiative_params[:parent[:id]])
 
