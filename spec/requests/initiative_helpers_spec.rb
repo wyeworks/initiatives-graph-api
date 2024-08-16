@@ -17,7 +17,7 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
     expect { post initiative_helpers_path(initiative.id), params: helper_ids, as: :json }
       .to change {
             initiative.helpers.count
-          }.by 2
+          }.by wyeworkers.length
 
     db_helpers = initiative.reload.helpers
 
