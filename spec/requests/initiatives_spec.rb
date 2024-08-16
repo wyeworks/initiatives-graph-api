@@ -12,19 +12,19 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiatives
     all_db_initiatives = Initiative.all
     get initiatives_path
-    expect(response.body).to eq(all_db_initiatives.to_json(include: {
-                                                             source: { only: [:id] },
-                                                             parent: { only: [:id] }
-                                                           }))
+    expect(response.parsed_body).to eq(all_db_initiatives.as_json(include: {
+                                                                    source: { only: [:id] },
+                                                                    parent: { only: [:id] }
+                                                                  }))
   end
 
   it "GET /initiatives/:initiative_id" do
     initiatives
     get initiative_path(initiative)
-    expect(response.body).to eq(initiative.to_json(include: {
-                                                     source: { only: [:id] },
-                                                     parent: { only: [:id] }
-                                                   }))
+    expect(response.parsed_body).to eq(initiative.as_json(include: {
+                                                            source: { only: [:id] },
+                                                            parent: { only: [:id] }
+                                                          }))
   end
 
   it "POST /initiatives" do
@@ -43,7 +43,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     db_initiative = Initiative.find_by(title: initiative.title)
     expect(db_initiative).not_to be_nil
 
-    expect(response.body).to eq(db_initiative.to_json(include:))
+    expect(response.parsed_body).to eq(db_initiative.as_json(include:))
   end
 
   it "PUT /initiatives" do
@@ -62,8 +62,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
 
     expect(db_initiative).not_to be_nil
 
-    # TODO : why does this come in in a different order??
-    expect(JSON.parse(response.body)).to eq(db_initiative.as_json(include:))
+    expect(response.parsed_body).to eq(db_initiative.as_json(include:))
   end
 
   it "DELETE /initiatives/:initiative_id" do

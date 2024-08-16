@@ -8,7 +8,7 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
 
   it "GET /initiatives/:initiative_id/helpers" do
     get initiative_helpers_path(initiative.id)
-    expect(response.body).to eq(initiative.helpers.to_json)
+    expect(response.parsed_body).to eq(initiative.helpers.as_json)
   end
 
   it "POST /initiatives/:initiative_id/helpers/:helper_id" do
@@ -21,7 +21,7 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
 
     db_helpers = initiative.reload.helpers
 
-    expect(response.body).to eq(db_helpers.to_json)
+    expect(response.parsed_body).to eq(db_helpers.as_json)
   end
 
   # it "PUT /initiatives/:initiative_id/helpers" do
@@ -34,7 +34,7 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
 
   #   db_helpers = initiative.reload.helpers
 
-  #   expect(response.body).to eq(db_helpers.to_json)
+  #   expect(response.parsed_body).to eq(db_helpers.as_json)
   # end
 
   it "DELETE /initiatives/:initiative_id/helpers/:helper_id" do

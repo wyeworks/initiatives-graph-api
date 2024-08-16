@@ -9,13 +9,13 @@ RSpec.describe "Developers Endpoint", type: :request do
   it "GET /developers" do
     developers
     get developers_path
-    expect(response.body).to eq(developers.to_json)
+    expect(response.parsed_body).to eq(developers.as_json)
   end
 
   it "GET /developers/:developer_id" do
     developers
     get developer_path(developer)
-    expect(response.body).to eq(developer.to_json)
+    expect(response.parsed_body).to eq(developer.as_json)
   end
 
   it "POST /developers" do

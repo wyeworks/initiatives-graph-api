@@ -25,13 +25,6 @@ class Wyeworker < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  def as_json(...)
-    json = super(...)
-    json[:sourced_initiatives] = sourced_initiatives.map(&:id)
-    json[:helped_initiatives] = helped_initiatives.map(&:id)
-    { self.class.name.downcase => json }
-  end
-
   private
 
   def cannot_destroy_if_source

@@ -9,13 +9,13 @@ RSpec.describe "Managers Endpoint", type: :request do
   it "GET /managers" do
     managers
     get managers_path
-    expect(response.body).to eq(managers.to_json)
+    expect(response.parsed_body).to eq(managers.as_json)
   end
 
   it "GET /managers/:manager_id" do
     managers
     get manager_path(manager)
-    expect(response.body).to eq(manager.to_json)
+    expect(response.parsed_body).to eq(manager.as_json)
   end
 
   it "POST /managers" do
