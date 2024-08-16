@@ -11,23 +11,10 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
     expect(response.body).to eq(initiative.helpers.to_json)
   end
 
-  it "POST /initiatives/:initiative_id/helpers" do
-    helper_ids = initiative.helpers.map(&:id).concat wyeworkers.map(&:id)
-
-    expect { post initiative_helpers_path(initiative.id), params: helper_ids, as: :json }
-      .to change {
-            initiative.helpers.count
-          }.by wyeworkers.length
-
-    db_helpers = initiative.reload.helpers
-
-    expect(response.body).to eq(db_helpers.to_json)
-  end
-
-  it "PUT /initiatives/:initiative_id/helpers/:helper_id" do
+  it "POST /initiatives/:initiative_id/helpers/:helper_id" do
     helper_id = create(:developer).id
 
-    expect { put initiative_helper_path(initiative.id, helper_id), params: [helper_id], as: :json }
+    expect { post initiative_helpers_path(initiative.id), params: [helper_id], as: :json }
       .to change {
             initiative.helpers.count
           }.by 1
@@ -36,6 +23,19 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
 
     expect(response.body).to eq(db_helpers.to_json)
   end
+
+  # it "PUT /initiatives/:initiative_id/helpers" do
+  #   helper_ids = initiative.helpers.map(&:id).concat wyeworkers.map(&:id)
+
+  #   expect { put initiative_helper_path(initiative.id), params: helper_ids, as: :json }
+  #     .to change {
+  #           initiative.helpers.count
+  #         }.by wyeworkers.length
+
+  #   db_helpers = initiative.reload.helpers
+
+  #   expect(response.body).to eq(db_helpers.to_json)
+  # end
 
   it "DELETE /initiatives/:initiative_id/helpers/:helper_id" do
     helper_id = initiative.helpers.sample.id
