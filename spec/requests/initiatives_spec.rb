@@ -35,9 +35,10 @@ RSpec.describe "Initiatives Endpoint", type: :request do
       parent: { only: [:id] }
     }
 
-    expect { post initiatives_path, params: initiative.as_json(include:), as: :json }.to change {
-                                                                                           Initiative.all.count
-                                                                                         }.by 1
+    expect { post initiatives_path, params: initiative.as_json(include:), as: :json }
+      .to change {
+            Initiative.all.count
+          }.by 1
 
     db_initiative = Initiative.find_by(title: initiative.title)
     expect(db_initiative).not_to be_nil
@@ -54,7 +55,8 @@ RSpec.describe "Initiatives Endpoint", type: :request do
       source: { only: [:id] },
       parent: { only: [:id] }
     }
-    expect { post initiatives_path, params: initiative.as_json(include:), as: :json }.to change(Initiative, :all)
+    expect { post initiatives_path, params: initiative.as_json(include:), as: :json }
+      .to change(Initiative, :all)
 
     db_initiative = Initiative.find_by(title: different_title)
 
