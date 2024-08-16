@@ -23,4 +23,28 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
 
     expect(response.body).to eq(db_helpers.to_json)
   end
+
+  it "PUT /initiatives/:initiative_id/helpers/:helper_id" do
+    helper_id = create(:developer).id
+
+    expect { put initiative_helper_path(initiative.id, helper_id), params: [helper_id], as: :json }
+      .to change {
+            initiative.helpers.count
+          }.by 1
+
+    db_helpers = initiative.reload.helpers
+
+    expect(response.body).to eq(db_helpers.to_json)
+  end
+
+  it "DELETE /initiatives/:initiative_id/helpers/:helper_id" do
+    helper_id = initiative.helpers.sample.id
+
+    expect { delete initiative_helper_path(initiative.id, helper_id) }
+      .to change {
+            initiative.helpers.count
+          }.by(-1)
+
+    expect(response).to have_http_status(:no_content)
+  end
 end

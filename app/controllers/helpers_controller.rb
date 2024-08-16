@@ -1,21 +1,33 @@
 # frozen_string_literal: true
 
 class HelpersController < ApplicationController
-  before_action :set_initiative, only: %i[index create]
+  before_action :set_initiative, only: %i[index create update destroy]
 
   def index
-    @current_helpers = Wyeworker
-                       .joins("JOIN initiative_helpers " \
-                          "ON wyeworkers.id = initiative_helpers.helper_id " \
-                          "JOIN initiatives " \
-                          "ON initiative_helpers.initiative_id = initiatives.id ")
-                       .where(initiatives: { id: @initiative_id })
-    render json: @current_helpers
+    render json: @initiative.helpers
   end
 
   def create
-    if @initiative.update(helpers: helpers_param.map { |id| Wyeworker.find(id) })
+    if @initiative.update(helpers: helpers_from_param)
       render json: @initiative.helpers, status: :created, location: @initiative
+    else
+      render json: @initiative.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    new_helpers = @initiative.helpers.concat helpers_from_param
+    if @initiative.update(helpers: new_helpers)
+      render json: @initiative.helpers, status: :created, location: @initiative
+    else
+      render json: @initiative.errors, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    new_helpers = @initiative.helpers - [Wyeworker.find(params[:id])]
+    if @initiative.update(helpers: new_helpers)
+      render json: @initiative.helpers, status: :no_content, location: @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end
@@ -28,7 +40,9 @@ class HelpersController < ApplicationController
     @initiative = Initiative.find(@initiative_id)
   end
 
-  def helpers_param
-    params.require(:_json)
+  def helpers_from_param
+    params
+      .require(:_json)
+      .map { |id| Wyeworker.find(id) }
   end
 end
