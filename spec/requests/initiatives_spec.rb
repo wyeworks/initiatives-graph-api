@@ -55,14 +55,15 @@ RSpec.describe "Initiatives Endpoint", type: :request do
       source: { only: [:id] },
       parent: { only: [:id] }
     }
-    expect { post initiatives_path, params: initiative.as_json(include:), as: :json }
+    expect { put initiative_path(initiative.id), params: initiative.as_json(include:), as: :json }
       .to change(Initiative, :all)
 
     db_initiative = Initiative.find_by(title: different_title)
 
     expect(db_initiative).not_to be_nil
 
-    expect(response.body).to eq(db_initiative.to_json(include:))
+    # TODO : why does this come in in a different order??
+    expect(JSON.parse(response.body)).to eq(db_initiative.as_json(include:))
   end
 
   it "DELETE /initiatives/:initiative_id" do
