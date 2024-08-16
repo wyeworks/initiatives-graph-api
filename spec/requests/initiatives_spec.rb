@@ -43,7 +43,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     db_initiative = Initiative.find_by(title: initiative.title)
     expect(db_initiative).not_to be_nil
 
-    expect(response.body).to eq(db_initiative.to_json)
+    expect(response.body).to eq(db_initiative.to_json(include:))
   end
 
   it "PUT /initiatives" do
@@ -62,7 +62,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
 
     expect(db_initiative).not_to be_nil
 
-    expect(response.body).to eq(db_initiative.to_json)
+    expect(response.body).to eq(db_initiative.to_json(include:))
   end
 
   it "DELETE /initiatives/:initiative_id" do
