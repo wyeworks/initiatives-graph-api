@@ -13,7 +13,6 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     all_db_initiatives = Initiative.all
     get initiatives_path
     expect(response.body).to eq(all_db_initiatives.to_json(include: {
-                                                             helpers: { only: [:id] },
                                                              source: { only: [:id] },
                                                              parent: { only: [:id] }
                                                            }))
@@ -23,7 +22,6 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiatives
     get initiative_path(initiative)
     expect(response.body).to eq(initiative.to_json(include: {
-                                                     helpers: { only: [:id] },
                                                      source: { only: [:id] },
                                                      parent: { only: [:id] }
                                                    }))
@@ -33,7 +31,6 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiative = build(:initiative, source: create(:manager), helpers: create_list(:wyeworker, 3))
 
     include = {
-      helpers: { only: [:id] },
       source: { only: [:id] },
       parent: { only: [:id] }
     }
@@ -54,7 +51,6 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiative.title = different_title
 
     include = {
-      helpers: { only: [:id] },
       source: { only: [:id] },
       parent: { only: [:id] }
     }

@@ -5,7 +5,6 @@ class InitiativesController < ApplicationController
 
   def index
     render json: Initiative.all.as_json(include: {
-                                          helpers: { only: [:id] },
                                           source: { only: [:id] },
                                           parent: { only: [:id] }
                                         })
@@ -13,7 +12,6 @@ class InitiativesController < ApplicationController
 
   def show
     render json: @initiative.as_json(include: {
-                                       helpers: { only: [:id] },
                                        source: { only: [:id] },
                                        parent: { only: [:id] }
                                      })
