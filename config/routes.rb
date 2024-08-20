@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :initiatives do
-    resources :helpers
+    resources :helpers, only: %i[index create destroy]
   end
   resources :developers
   resources :managers

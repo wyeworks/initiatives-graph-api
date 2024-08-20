@@ -8,7 +8,7 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
 
   it "GET /initiatives/:initiative_id/helpers" do
     get initiative_helpers_path(initiative.id)
-    expect(response.parsed_body).to eq(initiative.helpers.as_json)
+    expect(response.body).to eq(initiative.helpers.as_json)
   end
 
   it "POST /initiatives/:initiative_id/helpers/:helper_id" do
