@@ -37,6 +37,7 @@ class InitiativesController < ApplicationController
 
   private
 
+  # TODO: sustituir el return de resto en sus calls
   def include
     {
       source: { only: [:id] },
