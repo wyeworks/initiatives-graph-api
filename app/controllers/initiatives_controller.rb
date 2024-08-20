@@ -4,18 +4,27 @@ class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show destroy update]
 
   def index
-    render json: Initiative.all.as_json(include:)
+    render json: Initiative.all.as_json(include: {
+                                          source: { only: [:id] },
+                                          parent: { only: [:id] }
+                                        })
   end
 
   def show
-    render json: @initiative.as_json(include:)
+    render json: @initiative.as_json(include: {
+                                       source: { only: [:id] },
+                                       parent: { only: [:id] }
+                                     })
   end
 
   # POST
   def create
     @initiative = Initiative.new(initiative_params)
     if @initiative.save
-      render json: @initiative.as_json(include:), status: :created, location: @initiative
+      render json: @initiative.as_json(include: {
+                                         source: { only: [:id] },
+                                         parent: { only: [:id] }
+                                       }), status: :created, location: @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end
@@ -24,7 +33,10 @@ class InitiativesController < ApplicationController
   # PATCH/PUT
   def update
     if @initiative.update(initiative_params)
-      render json: @initiative.as_json(include:)
+      render json: @initiative.as_json(include: {
+                                         source: { only: [:id] },
+                                         parent: { only: [:id] }
+                                       })
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end
@@ -36,14 +48,6 @@ class InitiativesController < ApplicationController
   end
 
   private
-
-  # TODO: sustituir el return de resto en sus calls
-  def include
-    {
-      source: { only: [:id] },
-      parent: { only: [:id] }
-    }
-  end
 
   def set_initiative
     @initiative_id = params[:id]
