@@ -41,7 +41,7 @@ FactoryBot.define do
     source { build :manager }
 
     trait :with_helpers do
-      helpers { build_list(:wyeworker, 3) << build(:manager) }
+      helpers { build_list(:developer, 3) << build(:manager) }
     end
 
     trait :with_parent do
@@ -49,8 +49,8 @@ FactoryBot.define do
     end
 
     trait :with_helpers_no_manager do
-      source { build :wyeworker }
-      helpers { build_list(:wyeworker, 3) }
+      source { build :developer }
+      helpers { build_list(:developer, 3) }
     end
   end
 end
