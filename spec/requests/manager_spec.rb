@@ -4,26 +4,25 @@ require "rails_helper"
 
 RSpec.describe "Managers Endpoint", type: :request do
   let(:managers) { create_list(:manager, 5) }
-  let(:manager) { create(:manager) }
 
   it "GET /managers" do
     managers
     get managers_path
-    expect(response.parsed_body).to eq(Manager.all.as_json)
+    expect(response.parsed_body).to eq(managers.as_json)
   end
 
   it "GET /managers/:manager_id" do
-    managers
+    manager = managers.sample
     get manager_path(manager)
     expect(response.parsed_body).to eq(manager.as_json)
   end
 
   it "POST /managers" do
-    manager = build(:manager)
+    manager = attributes_for(:manager)
 
-    post managers_path, params: manager.as_json, as: :json
+    post managers_path, params: manager, as: :json
     expect(response).to have_http_status(:created)
-    expect(response.body).to include(manager.name)
+    expect(response.body).to include(manager[:name])
   end
 
   it "PUT /managers" do
@@ -37,6 +36,7 @@ RSpec.describe "Managers Endpoint", type: :request do
   end
 
   it "DELETE /managers/:manager_id" do
+    manager = managers.sample
     delete manager_path(manager)
     expect(response).to have_http_status(:no_content)
   end

@@ -4,26 +4,25 @@ require "rails_helper"
 
 RSpec.describe "Developers Endpoint", type: :request do
   let(:developers) { create_list(:developer, 5) }
-  let(:developer) { create(:developer) }
 
   it "GET /developers" do
     developers
     get developers_path
-    expect(response.parsed_body).to eq(Developer.all.as_json)
+    expect(response.parsed_body).to eq(developers.as_json)
   end
 
   it "GET /developers/:developer_id" do
-    developers
+    developer = developers.sample
     get developer_path(developer)
     expect(response.parsed_body).to eq(developer.as_json)
   end
 
   it "POST /developers" do
-    developer = build(:developer)
+    developer = attributes_for(:developer)
 
-    post developers_path, params: developer.as_json, as: :json
+    post developers_path, params: developer, as: :json
     expect(response).to have_http_status(:created)
-    expect(response.body).to include(developer.name)
+    expect(response.body).to include(developer[:name])
   end
 
   it "PUT /developers" do
@@ -37,6 +36,7 @@ RSpec.describe "Developers Endpoint", type: :request do
   end
 
   it "DELETE /developers/:developer_id" do
+    developer = developers.sample
     delete developer_path(developer)
     expect(response).to have_http_status(:no_content)
   end
