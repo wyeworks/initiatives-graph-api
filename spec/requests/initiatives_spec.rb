@@ -19,7 +19,6 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   end
 
   it "GET /initiatives/:initiative_id" do
-    initiatives
     get initiative_path(initiative)
     expect(response.parsed_body).to eq(initiative.as_json(include: {
                                                             source: { only: [:id] },
