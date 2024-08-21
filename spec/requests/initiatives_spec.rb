@@ -5,8 +5,6 @@ require "rails_helper"
 RSpec.describe "Initiatives Endpoint", type: :request do
   let(:initiatives) { create_list(:initiative, 5) }
 
-  let(:developer) { create(:wyeworker) }
-
   it "GET /initiatives" do
     initiatives
     all_db_initiatives = Initiative.all
