@@ -4,7 +4,6 @@ require "rails_helper"
 
 RSpec.describe "Initiatives Endpoint", type: :request do
   let(:initiatives) { create_list(:initiative, 5) }
-  let(:initiative) { create(:initiative) }
 
   let(:developer) { create(:wyeworker) }
 
@@ -19,6 +18,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   end
 
   it "GET /initiatives/:initiative_id" do
+    initiative = initiatives.sample
     get initiative_path(initiative)
     expect(response.parsed_body).to eq(initiative.as_json(include: {
                                                             source: { only: [:id] },
@@ -65,6 +65,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   end
 
   it "DELETE /initiatives/:initiative_id" do
+    initiative = initiatives.sample
     delete initiative_path(initiative)
     expect(response).to have_http_status(:no_content)
   end
