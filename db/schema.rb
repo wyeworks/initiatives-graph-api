@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_16_160432) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_09_125904) do
   create_table "initiatives", force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
@@ -20,16 +20,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_160432) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type"
+    t.integer "owner_id", null: false
+    t.index ["owner_id"], name: "index_initiatives_on_owner_id"
     t.index ["parent_id"], name: "index_initiatives_on_parent_id"
     t.index ["title"], name: "index_initiatives_on_title", unique: true
   end
 
-  create_table "wyeworker_initiative_belongings", primary_key: ["wyeworker_id", "initiative_id"], force: :cascade do |t|
-    t.string "kind"
+  create_table "initiatives_wyeworkers", primary_key: ["wyeworker_id", "initiative_id"], force: :cascade do |t|
     t.integer "initiative_id", null: false
     t.integer "wyeworker_id", null: false
-    t.index ["initiative_id"], name: "index_wyeworker_initiative_belongings_on_initiative_id"
-    t.index ["wyeworker_id"], name: "index_wyeworker_initiative_belongings_on_wyeworker_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiative_id"], name: "index_initiatives_wyeworkers_on_initiative_id"
+    t.index ["wyeworker_id"], name: "index_initiatives_wyeworkers_on_wyeworker_id"
   end
 
   create_table "wyeworkers", force: :cascade do |t|
@@ -41,6 +44,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_160432) do
   end
 
   add_foreign_key "initiatives", "initiatives", column: "parent_id"
-  add_foreign_key "wyeworker_initiative_belongings", "initiatives"
-  add_foreign_key "wyeworker_initiative_belongings", "wyeworkers"
+  add_foreign_key "initiatives", "wyeworkers", column: "owner_id"
+  add_foreign_key "initiatives_wyeworkers", "initiatives", on_delete: :cascade
+  add_foreign_key "initiatives_wyeworkers", "wyeworkers", on_delete: :cascade
 end
