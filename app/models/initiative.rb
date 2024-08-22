@@ -42,10 +42,6 @@ class Initiative < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validate :must_have_manager
 
-  before_create do
-    self.description ||= "No description"
-  end
-
   def must_have_manager
     if !(
         source.is_a?(Manager) ||
