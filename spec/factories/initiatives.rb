@@ -12,19 +12,19 @@
 #  type        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  owner_id    :integer          not null
 #  parent_id   :integer
-#  source_id   :integer          not null
 #
 # Indexes
 #
+#  index_initiatives_on_owner_id   (owner_id)
 #  index_initiatives_on_parent_id  (parent_id)
-#  index_initiatives_on_source_id  (source_id)
 #  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
+#  owner_id   (owner_id => wyeworkers.id)
 #  parent_id  (parent_id => initiatives.id)
-#  source_id  (source_id => wyeworkers.id)
 #
 FactoryBot.define do
   factory :initiative, aliases: %i[initiative_no_parent] do
@@ -32,7 +32,7 @@ FactoryBot.define do
       "Initiative-#{n}"
     end
 
-    source { build :manager }
+    owner { build :manager }
 
     helpers { build_list(:wyeworker, 3) << build(:manager) }
 
@@ -45,7 +45,7 @@ FactoryBot.define do
     end
 
     factory :initiative_no_manager do
-      source { build :wyeworker }
+      owner { build :wyeworker }
       helpers { build_list(:wyeworker, 3) }
     end
   end

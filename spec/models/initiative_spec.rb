@@ -12,27 +12,27 @@
 #  type        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  owner_id    :integer          not null
 #  parent_id   :integer
-#  source_id   :integer          not null
 #
 # Indexes
 #
+#  index_initiatives_on_owner_id   (owner_id)
 #  index_initiatives_on_parent_id  (parent_id)
-#  index_initiatives_on_source_id  (source_id)
 #  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
+#  owner_id   (owner_id => wyeworkers.id)
 #  parent_id  (parent_id => initiatives.id)
-#  source_id  (source_id => wyeworkers.id)
 #
 require "rails_helper"
 
 RSpec.describe Initiative, type: :model do
   let(:initiative) { create(:initiative) }
 
-  it "wires up as an initiative of its source" do
-    expect(initiative.source.sourced_initiatives).to include(initiative)
+  it "wires up as an initiative of its owner" do
+    expect(initiative.owner.owned_initiatives).to include(initiative)
   end
 
   it "wires up as an initiative of its helpers" do
@@ -44,8 +44,8 @@ RSpec.describe Initiative, type: :model do
   end
 
   context "with just one manager involved" do
-    it "is valid with them being the source" do
-      expect(build(:initiative_no_manager, source: build(:manager))).to be_valid
+    it "is valid with them being the owner" do
+      expect(build(:initiative_no_manager, owner: build(:manager))).to be_valid
     end
 
     it "is valid with them being a helper" do
