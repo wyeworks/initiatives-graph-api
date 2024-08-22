@@ -16,14 +16,6 @@ class HelpersController < ApplicationController
     end
   end
 
-  # def update
-  #   if @initiative.update(helpers: helpers_from_body)
-  #     render json: @initiative.helpers, status: :created, location: @initiative
-  #   else
-  #     render json: @initiative.errors, status: :unprocessable_entity
-  #   end
-  # end
-
   def destroy
     new_helpers = @initiative.helpers - [Wyeworker.find(params[:id])]
     if @initiative.update(helpers: new_helpers)
