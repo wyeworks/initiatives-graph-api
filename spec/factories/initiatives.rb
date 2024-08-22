@@ -38,7 +38,7 @@ FactoryBot.define do
 
     status { :in_progress }
 
-    source { build :manager }
+    source { create :manager }
 
     trait :with_helpers do
       helpers { build_list(:developer, 3) << build(:manager) }
@@ -49,7 +49,7 @@ FactoryBot.define do
     end
 
     trait :with_helpers_no_manager do
-      source { build :developer }
+      source { create :developer }
       helpers { build_list(:developer, 3) }
     end
   end

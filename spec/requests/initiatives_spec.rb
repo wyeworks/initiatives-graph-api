@@ -25,22 +25,21 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   end
 
   it "POST /initiatives" do
-    initiative = build(:initiative, source: create(:manager), helpers: create_list(:wyeworker, 3))
+    initiative = attributes_for(:initiative)
+    initiative[:source_id] = initiative.delete(:source).id
 
-    include = {
-      source: { only: [:id] },
-      parent: { only: [:id] }
-    }
-
-    expect { post initiatives_path, params: initiative.as_json(include:), as: :json }
+    expect { post initiatives_path, params: initiative, as: :json }
       .to change {
             Initiative.all.count
           }.by 1
 
-    db_initiative = Initiative.find_by(title: initiative.title)
+    db_initiative = Initiative.find_by(title: initiative[:title])
     expect(db_initiative).not_to be_nil
 
-    expect(response.parsed_body).to eq(db_initiative.as_json(include:))
+    expect(response.parsed_body).to eq(db_initiative.as_json(include: {
+                                                               source: { only: [:id] },
+                                                               parent: { only: [:id] }
+                                                             }))
   end
 
   it "PUT /initiatives" do
