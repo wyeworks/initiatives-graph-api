@@ -19,9 +19,9 @@ require "rails_helper"
 RSpec.describe Developer, type: :model do
   let(:developer) { create(:developer) }
 
-  it "cannot be deleted if source of an initiative" do
+  it "cannot be deleted if owner of an initiative" do
     # Need the manager here because of an initiative validation
-    create(:initiative, source: developer, helpers: create_list(:manager, 1))
+    create(:initiative, owner: developer, helpers: create_list(:manager, 1))
     expect { developer.destroy! }.to raise_error(ActiveRecord::RecordNotDestroyed)
   end
 end

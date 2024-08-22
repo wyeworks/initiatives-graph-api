@@ -15,23 +15,18 @@
 #  index_wyeworkers_on_name  (name) UNIQUE
 #
 class Wyeworker < ApplicationRecord
-  has_many :sourced_initiatives,
-           foreign_key: :source_id,
-           class_name: "Initiative"
-  has_and_belongs_to_many :helped_initiatives,
-                          join_table: :initiative_helpers,
-                          foreign_key: :helper_id,
-                          class_name: "Initiative"
+  has_many :owned_initiatives, foreign_key: :owner_id, class_name: "Initiative"
+  has_and_belongs_to_many :helped_initiatives, class_name: "Initiative"
 
   validates :name, presence: true, uniqueness: true
-  before_destroy :cannot_destroy_if_source
+  before_destroy :cannot_destroy_if_owner
 
   private
 
-  def cannot_destroy_if_source
-    return if sourced_initiatives.empty?
+  def cannot_destroy_if_owner
+    return if owned_initiatives.empty?
 
     raise ActiveRecord::RecordNotDestroyed,
-          "Can't delete because it would leave #{sourced_initiatives.join(', ')} without a source"
+          "Can't delete because it would leave #{owned_initiatives.join(', ')} without an owner"
   end
 end

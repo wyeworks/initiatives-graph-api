@@ -11,15 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_08_09_125904) do
-  create_table "initiative_helpers", primary_key: ["helper_id", "initiative_id"], force: :cascade do |t|
-    t.integer "initiative_id", null: false
-    t.integer "helper_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["helper_id"], name: "index_initiative_helpers_on_helper_id"
-    t.index ["initiative_id"], name: "index_initiative_helpers_on_initiative_id"
-  end
-
   create_table "initiatives", force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
@@ -29,10 +20,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_125904) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type"
-    t.integer "source_id", null: false
+    t.integer "owner_id", null: false
+    t.index ["owner_id"], name: "index_initiatives_on_owner_id"
     t.index ["parent_id"], name: "index_initiatives_on_parent_id"
-    t.index ["source_id"], name: "index_initiatives_on_source_id"
     t.index ["title"], name: "index_initiatives_on_title", unique: true
+  end
+
+  create_table "initiatives_wyeworkers", primary_key: ["wyeworker_id", "initiative_id"], force: :cascade do |t|
+    t.integer "initiative_id", null: false
+    t.integer "wyeworker_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiative_id"], name: "index_initiatives_wyeworkers_on_initiative_id"
+    t.index ["wyeworker_id"], name: "index_initiatives_wyeworkers_on_wyeworker_id"
   end
 
   create_table "wyeworkers", force: :cascade do |t|
@@ -43,8 +43,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_125904) do
     t.index ["name"], name: "index_wyeworkers_on_name", unique: true
   end
 
-  add_foreign_key "initiative_helpers", "initiatives", on_delete: :cascade
-  add_foreign_key "initiative_helpers", "wyeworkers", column: "helper_id", on_delete: :cascade
   add_foreign_key "initiatives", "initiatives", column: "parent_id"
-  add_foreign_key "initiatives", "wyeworkers", column: "source_id"
+  add_foreign_key "initiatives", "wyeworkers", column: "owner_id"
+  add_foreign_key "initiatives_wyeworkers", "initiatives", on_delete: :cascade
+  add_foreign_key "initiatives_wyeworkers", "wyeworkers", on_delete: :cascade
 end

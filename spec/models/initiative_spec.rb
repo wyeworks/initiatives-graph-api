@@ -15,27 +15,27 @@ require "rails_helper"
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  parent_id   :integer
-#  source_id   :integer          not null
+#  owner_id   :integer          not null
 #
 # Indexes
 #
 #  index_initiatives_on_parent_id  (parent_id)
-#  index_initiatives_on_source_id  (source_id)
+#  index_initiatives_on_owner_id  (owner_id)
 #  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
 #  parent_id  (parent_id => initiatives.id)
-#  source_id  (source_id => wyeworkers.id)
+#  owner_id  (owner_id => wyeworkers.id)
 #
 
 RSpec.describe Initiative, type: :model do
-  decribe "validations" do
+  describe "validations" do
     let(:initiative) { build(:initiative) }
 
     context "without an associated manager" do
       it "is invalid" do
-        initiative.source = build(:developer)
+        initiative.owner = build(:developer)
         initiative.helpers = [build(:developer)]
 
         initiative.validate
@@ -44,25 +44,25 @@ RSpec.describe Initiative, type: :model do
     end
 
     context "with an associated manager" do
-      describe "as the source" do
+      describe "as the owner" do
         it "is valid" do
-          initiative.source = build(:manager)
+          initiative.owner = build(:manager)
           initiative.helpers = [build(:developer)]
-          expect(build(:initiative, source: build(:manager), helpers: [])).to be_valid
+          expect(build(:initiative, owner: build(:manager), helpers: [])).to be_valid
         end
       end
 
       describe "as a helper" do
         it "is valid" do
-          initiative.source = build(:developer)
+          initiative.owner = build(:developer)
           initiative.helpers = build_list(:developer, 3) << build(:manager)
           expect(initiative).to be_valid
         end
       end
 
-      describe "as both a source and as a helper" do
+      describe "as both a owner and as a helper" do
         it "is valid" do
-          initiative.source = build(:manager)
+          initiative.owner = build(:manager)
           initiative.helpers = build_list(:developer, 3) << build(:manager)
           expect(initiative).to be_valid
         end

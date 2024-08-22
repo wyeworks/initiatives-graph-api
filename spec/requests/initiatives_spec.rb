@@ -10,7 +10,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     all_db_initiatives = Initiative.all
     get initiatives_path
     expect(response.parsed_body).to eq(all_db_initiatives.as_json(include: {
-                                                                    source: { only: [:id] },
+                                                                    owner: { only: [:id] },
                                                                     parent: { only: [:id] }
                                                                   }))
   end
@@ -19,14 +19,14 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiative = initiatives.sample
     get initiative_path(initiative)
     expect(response.parsed_body).to eq(initiative.as_json(include: {
-                                                            source: { only: [:id] },
+                                                            owner: { only: [:id] },
                                                             parent: { only: [:id] }
                                                           }))
   end
 
   it "POST /initiatives" do
     initiative = attributes_for(:initiative)
-    initiative[:source_id] = initiative.delete(:source).id
+    initiative[:owner_id] = initiative.delete(:owner).id
 
     expect { post initiatives_path, params: initiative, as: :json }
       .to change {
@@ -37,7 +37,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     expect(db_initiative).not_to be_nil
 
     expect(response.parsed_body).to eq(db_initiative.as_json(include: {
-                                                               source: { only: [:id] },
+                                                               owner: { only: [:id] },
                                                                parent: { only: [:id] }
                                                              }))
   end
@@ -48,7 +48,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiative.title = different_title
 
     include = {
-      source: { only: [:id] },
+      owner: { only: [:id] },
       parent: { only: [:id] }
     }
     expect { put initiative_path(initiative.id), params: initiative.as_json(include:), as: :json }

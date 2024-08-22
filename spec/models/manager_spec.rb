@@ -18,8 +18,8 @@ require "rails_helper"
 RSpec.describe Manager, type: :model do
   let(:manager) { create(:manager) }
 
-  it "cannot be deleted if source of an initiative" do
-    create(:initiative, source: manager)
+  it "cannot be deleted if owner of an initiative" do
+    create(:initiative, owner: manager)
     expect { manager.destroy! }.to raise_error(ActiveRecord::RecordNotDestroyed)
   end
 end

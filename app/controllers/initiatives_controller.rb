@@ -5,14 +5,14 @@ class InitiativesController < ApplicationController
 
   def index
     render json: Initiative.all.as_json(include: {
-                                          source: { only: [:id] },
+                                          owner: { only: [:id] },
                                           parent: { only: [:id] }
                                         })
   end
 
   def show
     render json: @initiative.as_json(include: {
-                                       source: { only: [:id] },
+                                       owner: { only: [:id] },
                                        parent: { only: [:id] }
                                      })
   end
@@ -22,7 +22,7 @@ class InitiativesController < ApplicationController
     @initiative = Initiative.new(initiative_params)
     if @initiative.save
       render json: @initiative.as_json(include: {
-                                         source: { only: [:id] },
+                                         owner: { only: [:id] },
                                          parent: { only: [:id] }
                                        }), status: :created, location: @initiative
     else
@@ -34,7 +34,7 @@ class InitiativesController < ApplicationController
   def update
     if @initiative.update(initiative_params)
       render json: @initiative.as_json(include: {
-                                         source: { only: [:id] },
+                                         owner: { only: [:id] },
                                          parent: { only: [:id] }
                                        })
     else
@@ -57,6 +57,6 @@ class InitiativesController < ApplicationController
   def initiative_params
     params
       .require(:initiative)
-      .permit(:title, :description, :startdate, :source_id, :parent_id)
+      .permit(:title, :description, :startdate, :owner_id, :parent_id)
   end
 end
