@@ -8,7 +8,7 @@ RSpec.describe "Managers Endpoint", type: :request do
   it "GET /managers" do
     managers
     get managers_path
-    expect(response.parsed_body).to eq(managers.as_json)
+    expect(response.parsed_body).to eq(Manager.all.as_json)
   end
 
   it "GET /managers/:manager_id" do
