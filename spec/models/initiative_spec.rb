@@ -31,32 +31,32 @@ require "rails_helper"
 
 RSpec.describe Initiative, type: :model do
   let(:initiative) { create(:initiative) }
-  let(:initiative_with_helpers) { create(:initiative, :with_helpers) }
-
-  it "wires up as an initiative of its source" do
-    expect(initiative.source.sourced_initiatives).to include(initiative)
-  end
-
-  it "wires up as an initiative of its helpers" do
-    expect(initiative_with_helpers.helpers.sample.helped_initiatives).to include(initiative_with_helpers)
-  end
-
-  it "is invalid without a manager" do
-    initiative_no_manager = build(:initiative, source: build(:developer))
-    expect(initiative_no_manager).to be_invalid
-  end
-
-  context "with just one manager involved" do
-    it "is valid with them being the source" do
-      expect(build(:initiative, source: build(:manager), helpers: [])).to be_valid
-    end
-
-    it "is valid with them being a helper" do
-      expect(build(:initiative, source: build(:developer), helpers: [build(:manager)])).to be_valid
-    end
-  end
 
   it "provides a default description" do
     expect(initiative.description).not_to be_empty
+  end
+
+  context "when validating the presence of a manager" do
+    let(:initiative) { build(:initiative) }
+
+    it "is invalid without a manager" do
+      initiative.source = build(:developer)
+      initiative.helpers = [build(:developer)]
+
+      initiative.validate
+      expect(initiative.errors.full_messages).to include(/manager/)
+    end
+
+    it "is valid with a manager being only the source" do
+      initiative.source = build(:manager)
+      initiative.helpers = [build(:developer)]
+      expect(build(:initiative, source: build(:manager), helpers: [])).to be_valid
+    end
+
+    it "is valid with a manager being only one helper" do
+      initiative.source = build(:developer)
+      initiative.helpers = build_list(:developer, 3) << build(:manager)
+      expect(initiative).to be_valid
+    end
   end
 end

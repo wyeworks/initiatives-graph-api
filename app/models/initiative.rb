@@ -51,7 +51,7 @@ class Initiative < ApplicationRecord
         source.is_a?(Manager) ||
         helpers.any? { |h| h.is_a?(Manager) }
       )
-      errors.add source.is_a?(Manager) ? :helpers : :manager,
+      errors.add !source.is_a?(Manager) ? :source : :helpers,
                  "An initiative must have a manager involved, as a source or as a helper"
     end
   end
