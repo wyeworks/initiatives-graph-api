@@ -24,17 +24,14 @@ class Wyeworker < ApplicationRecord
                           class_name: "Initiative"
 
   validates :name, presence: true, uniqueness: true
+  before_destroy :cannot_destroy_if_source
 
   private
 
   def cannot_destroy_if_source
-    sourced_initiative_belonging = wyeworker_initiative_belongings.find do |wb|
-      wb.kind == "source"
-    end
-
-    return if !sourced_initiative_belonging.nil?
+    return if sourced_initiatives.empty?
 
     raise ActiveRecord::RecordNotDestroyed,
-          "Can't delete because it would leave #{sourced_initiative_belonging&.initiative&.title} without a source"
+          "Can't delete because it would leave #{sourced_initiatives.join(', ')} without a source"
   end
 end

@@ -29,7 +29,6 @@ require "rails_helper"
 #  source_id  (source_id => wyeworkers.id)
 #
 
-# TODO: add test for wyeworker cannot_destroy_if_source
 RSpec.describe Initiative, type: :model do
   let(:initiative) { create(:initiative) }
   let(:initiative_with_helpers) { create(:initiative, :with_helpers) }
