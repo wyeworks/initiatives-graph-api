@@ -32,7 +32,7 @@ RSpec.describe "Managers Endpoint", type: :request do
 
     put manager_path(manager), params: manager.as_json, as: :json
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include(different_name)
+    expect(response.parsed_body.except("updated_at")).to eq(manager.as_json.except("updated_at"))
   end
 
   it "DELETE /managers/:manager_id" do

@@ -32,7 +32,7 @@ RSpec.describe "Developers Endpoint", type: :request do
 
     put developer_path(developer), params: developer.as_json, as: :json
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include(different_name)
+    expect(response.parsed_body.except("updated_at")).to eq(developer.as_json.except("updated_at"))
   end
 
   it "DELETE /developers/:developer_id" do
