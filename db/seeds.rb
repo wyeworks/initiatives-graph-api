@@ -19,7 +19,7 @@ Manager.find_or_create_by!(name: "Cholee")
 
 Initiative.create(
   title: "Juntada",
-  source: Developer.find_by(name: "Ana"),
+  owner: Developer.find_by(name: "Ana"),
   helpers: Wyeworker.where(name: %w[
                              Jess
                              Juan
@@ -33,7 +33,7 @@ Initiative.create(
 Initiative.create(
   title: "JuntadaCeramica",
   parent: Initiative.find_by(title: "Juntada"),
-  source: Developer.find_by(name: "Juan"),
+  owner: Developer.find_by(name: "Juan"),
   helpers: Wyeworker.where(name: %w[
                              Jess
                              Carlos
@@ -43,7 +43,7 @@ Initiative.create(
 
 Initiative.create(
   title: "Libreria",
-  source: Developer.find_by(name: "Bob"),
+  owner: Developer.find_by(name: "Bob"),
   helpers: Wyeworker.where(name: %w[
                              Pedro
                              Ana
