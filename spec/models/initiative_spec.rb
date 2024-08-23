@@ -14,19 +14,19 @@ require "rails_helper"
 #  type        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  owner_id    :integer          not null
 #  parent_id   :integer
-#  owner_id   :integer          not null
 #
 # Indexes
 #
+#  index_initiatives_on_owner_id   (owner_id)
 #  index_initiatives_on_parent_id  (parent_id)
-#  index_initiatives_on_owner_id  (owner_id)
 #  index_initiatives_on_title      (title) UNIQUE
 #
 # Foreign Keys
 #
+#  owner_id   (owner_id => wyeworkers.id)
 #  parent_id  (parent_id => initiatives.id)
-#  owner_id  (owner_id => wyeworkers.id)
 #
 
 RSpec.describe Initiative, type: :model do
