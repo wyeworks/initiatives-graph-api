@@ -32,7 +32,11 @@ class ManagersController < ApplicationController
 
   # DELETE
   def destroy
-    @manager.destroy
+    if @manager.destroy
+      head :no_content
+    else
+      render json: @manager.errors, status: :unprocessable_entity
+    end
   end
 
   private

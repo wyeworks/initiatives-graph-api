@@ -32,7 +32,11 @@ class DevelopersController < ApplicationController
 
   # DELETE
   def destroy
-    @developer.destroy
+    if @developer.destroy
+      head :no_content
+    else
+      render json: @developer.errors, status: :unprocessable_entity
+    end
   end
 
   private

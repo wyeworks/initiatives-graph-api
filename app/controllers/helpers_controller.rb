@@ -19,7 +19,7 @@ class HelpersController < ApplicationController
   def destroy
     @initiative.helpers.delete(Wyeworker.find(params[:id]))
     if @initiative.save
-      render json: @initiative.helpers, status: :no_content, location: @initiative
+      head :no_content
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end

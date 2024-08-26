@@ -24,7 +24,11 @@ class InitiativesController < ApplicationController
 
   # DELETE
   def destroy
-    @initiative.destroy
+    if @initiative.destroy
+      head :no_content
+    else
+      render json: @initiative.errors, status: :unprocessable_entity
+    end
   end
 
   private
