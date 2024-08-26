@@ -23,6 +23,7 @@
 #
 # Foreign Keys
 #
+#  owner_id   (owner_id => wyeworkers.id) ON DELETE => cascade
 #  owner_id   (owner_id => wyeworkers.id)
 #  parent_id  (parent_id => initiatives.id)
 #

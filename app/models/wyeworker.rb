@@ -19,14 +19,4 @@ class Wyeworker < ApplicationRecord
   has_and_belongs_to_many :helped_initiatives, class_name: "Initiative"
 
   validates :name, presence: true, uniqueness: true
-  before_destroy :cannot_destroy_if_owner
-
-  private
-
-  def cannot_destroy_if_owner
-    return if owned_initiatives.empty?
-
-    raise ActiveRecord::RecordNotDestroyed,
-          "Can't delete because it would leave #{owned_initiatives.join(', ')} without an owner"
-  end
 end

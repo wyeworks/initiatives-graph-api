@@ -23,6 +23,7 @@
 #
 # Foreign Keys
 #
+#  owner_id   (owner_id => wyeworkers.id) ON DELETE => cascade
 #  owner_id   (owner_id => wyeworkers.id)
 #  parent_id  (parent_id => initiatives.id)
 #
@@ -33,7 +34,7 @@ class Initiative < ApplicationRecord
 
   belongs_to :owner, dependent: :destroy, class_name: "Wyeworker"
 
-  has_one :parent, class_name: "Initiative", foreign_key: "parent_id"
+  has_one :parent, class_name: "Initiative", foreign_key: "parent_id", dependent: :destroy
 
   validates :owner, presence: true
   validates :title, presence: true, uniqueness: true
