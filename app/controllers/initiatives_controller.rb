@@ -11,6 +11,7 @@ class InitiativesController < ApplicationController
   def create
     @initiative = Initiative.new(initiative_params)
     if @initiative.save
+      # TODO: jbuilder partials here too?
       render json: @initiative.as_json(include: {
                                          owner: { only: [:id] },
                                          parent: { only: [:id] }
@@ -23,6 +24,7 @@ class InitiativesController < ApplicationController
   # PATCH/PUT
   def update
     if @initiative.update(initiative_params)
+      # TODO: jbuilder partials here too?
       render json: @initiative.as_json(include: {
                                          owner: { only: [:id] },
                                          parent: { only: [:id] }
