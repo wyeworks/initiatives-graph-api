@@ -8,7 +8,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   it "GET /initiatives" do
     initiatives
     all_db_initiatives = Initiative.all
-    get initiatives_path
+    get initiatives_path, as: :json
     expect(response.parsed_body).to eq(all_db_initiatives.as_json(include: {
                                                                     owner: { only: [:id] },
                                                                     parent: { only: [:id] }
@@ -17,7 +17,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
 
   it "GET /initiatives/:initiative_id" do
     initiative = initiatives.sample
-    get initiative_path(initiative)
+    get initiative_path(initiative), as: :json
     expect(response.parsed_body).to eq(initiative.as_json(include: {
                                                             owner: { only: [:id] },
                                                             parent: { only: [:id] }

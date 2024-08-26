@@ -4,17 +4,7 @@ class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show destroy update]
 
   def index
-    render json: Initiative.all.as_json(include: {
-                                          owner: { only: [:id] },
-                                          parent: { only: [:id] }
-                                        })
-  end
-
-  def show
-    render json: @initiative.as_json(include: {
-                                       owner: { only: [:id] },
-                                       parent: { only: [:id] }
-                                     })
+    @initiatives = Initiative.all
   end
 
   # POST
@@ -50,8 +40,7 @@ class InitiativesController < ApplicationController
   private
 
   def set_initiative
-    @initiative_id = params[:id]
-    @initiative = Initiative.find(@initiative_id)
+    @initiative = Initiative.find(params[:id])
   end
 
   def initiative_params
