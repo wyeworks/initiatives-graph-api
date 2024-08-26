@@ -8,8 +8,8 @@ class HelpersController < ApplicationController
   end
 
   def create
-    new_helpers = @initiative.helpers.concat helpers_from_body
-    if @initiative.update(helpers: new_helpers)
+    @initiative.helpers << helpers_from_body
+    if @initiative.save
       render json: @initiative.helpers, status: :created, location: @initiative
     else
       render json: @initiative.errors, status: :unprocessable_entity
