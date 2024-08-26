@@ -34,7 +34,7 @@ class Initiative < ApplicationRecord
 
   belongs_to :owner, dependent: :destroy, class_name: "Wyeworker"
 
-  has_one :parent, class_name: "Initiative", foreign_key: "parent_id", dependent: :destroy
+  has_one :parent, class_name: "Initiative", foreign_key: "parent_id"
 
   validates :owner, presence: true
   validates :title, presence: true, uniqueness: true
