@@ -7,7 +7,7 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
   let(:wyeworkers) { [create(:manager), create(:developer)] }
 
   it "GET /initiatives/:initiative_id/helpers" do
-    get initiative_helpers_path(initiative.id)
+    get initiative_helpers_path(initiative.id), as: :json
     expect(response.parsed_body).to eq(initiative.helpers.as_json)
   end
 
@@ -27,7 +27,7 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
   it "DELETE /initiatives/:initiative_id/helpers/:helper_id" do
     helper_id = initiative.helpers.sample.id
 
-    expect { delete initiative_helper_path(initiative.id, helper_id) }
+    expect { delete initiative_helper_path(initiative.id, helper_id), as: :json }
       .to change {
             initiative.helpers.count
           }.by(-1)

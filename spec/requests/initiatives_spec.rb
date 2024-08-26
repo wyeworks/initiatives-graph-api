@@ -63,7 +63,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
 
   it "DELETE /initiatives/:initiative_id" do
     initiative = initiatives.sample
-    delete initiative_path(initiative)
+    delete initiative_path(initiative), as: :json
     expect(response).to have_http_status(:no_content)
   end
 end

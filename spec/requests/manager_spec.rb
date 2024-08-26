@@ -7,13 +7,13 @@ RSpec.describe "Managers Endpoint", type: :request do
 
   it "GET /managers" do
     managers
-    get managers_path
+    get managers_path, as: :json
     expect(response.parsed_body).to eq(Manager.all.as_json)
   end
 
   it "GET /managers/:manager_id" do
     manager = managers.sample
-    get manager_path(manager)
+    get manager_path(manager), as: :json
     expect(response.parsed_body).to eq(manager.as_json)
   end
 
@@ -37,7 +37,7 @@ RSpec.describe "Managers Endpoint", type: :request do
 
   it "DELETE /managers/:manager_id" do
     manager = managers.sample
-    delete manager_path(manager)
+    delete manager_path(manager), as: :json
     expect(response).to have_http_status(:no_content)
   end
 end

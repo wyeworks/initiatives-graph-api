@@ -7,13 +7,13 @@ RSpec.describe "Developers Endpoint", type: :request do
 
   it "GET /developers" do
     developers
-    get developers_path
+    get developers_path, as: :json
     expect(response.parsed_body).to eq(Developer.all.as_json)
   end
 
   it "GET /developers/:developer_id" do
     developer = developers.sample
-    get developer_path(developer)
+    get developer_path(developer), as: :json
     expect(response.parsed_body).to eq(developer.as_json)
   end
 
@@ -37,7 +37,7 @@ RSpec.describe "Developers Endpoint", type: :request do
 
   it "DELETE /developers/:developer_id" do
     developer = developers.sample
-    delete developer_path(developer)
+    delete developer_path(developer), as: :json
     expect(response).to have_http_status(:no_content)
   end
 end
