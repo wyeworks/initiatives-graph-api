@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDeleteCascadeForWyeworkersAndInitiatives < ActiveRecord::Migration[7.1]
   def change
     drop_table :wyeworker_initiative_belongings, # Need to drop the whole table because annotate won't work otherwise
