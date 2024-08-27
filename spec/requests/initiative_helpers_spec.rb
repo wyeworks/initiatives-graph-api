@@ -32,6 +32,6 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
             initiative.helpers.count
           }.by(-1)
 
-    expect(response).to have_http_status(:no_content)
+    expect(response.parsed_body).to eq(initiative.reload.helpers.as_json)
   end
 end
