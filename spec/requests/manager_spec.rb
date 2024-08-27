@@ -3,7 +3,8 @@
 require "rails_helper"
 
 RSpec.describe "Managers Endpoint", type: :request do
-  let(:managers) { create_list(:manager, 5) }
+  let(:manager) { create(:manager) }
+  let(:managers) { create_list(:manager, 5) << manager }
 
   it "GET /managers" do
     managers
@@ -12,7 +13,6 @@ RSpec.describe "Managers Endpoint", type: :request do
   end
 
   it "GET /managers/:manager_id" do
-    manager = managers.sample
     get manager_path(manager), as: :json
     expect(response.parsed_body).to eq(manager.as_json)
   end
@@ -36,7 +36,6 @@ RSpec.describe "Managers Endpoint", type: :request do
   end
 
   it "DELETE /managers/:manager_id" do
-    manager = managers.sample
     delete manager_path(manager), as: :json
     expect(response).to have_http_status(:no_content)
   end

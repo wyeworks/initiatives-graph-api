@@ -3,7 +3,8 @@
 require "rails_helper"
 
 RSpec.describe "Developers Endpoint", type: :request do
-  let(:developers) { create_list(:developer, 5) }
+  let(:developer) { create(:developer) }
+  let(:developers) { create_list(:developer, 5) << developer }
 
   it "GET /developers" do
     developers
@@ -12,7 +13,6 @@ RSpec.describe "Developers Endpoint", type: :request do
   end
 
   it "GET /developers/:developer_id" do
-    developer = developers.sample
     get developer_path(developer), as: :json
     expect(response.parsed_body).to eq(developer.as_json)
   end
@@ -36,7 +36,6 @@ RSpec.describe "Developers Endpoint", type: :request do
   end
 
   it "DELETE /developers/:developer_id" do
-    developer = developers.sample
     delete developer_path(developer), as: :json
     expect(response).to have_http_status(:no_content)
   end
