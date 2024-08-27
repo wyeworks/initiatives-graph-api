@@ -15,7 +15,7 @@ class DevelopersController < ApplicationController
   def create
     @developer = Developer.new(developer_params)
     if @developer.save
-      render json: @developer, status: :created, location: @developer
+      render json: @developer, status: :created
     else
       render json: @developer.errors, status: :unprocessable_entity
     end

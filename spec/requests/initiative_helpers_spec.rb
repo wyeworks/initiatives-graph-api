@@ -14,7 +14,7 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
   it "POST /initiatives/:initiative_id/helpers/:helper_id" do
     helper_id = create(:developer).id
 
-    expect { post initiative_helpers_path(initiative.id), params: [helper_id], as: :json }
+    expect { post initiative_helpers_path(initiative.id), params: { initiative: { helpers: [helper_id] } }, as: :json }
       .to change {
             initiative.helpers.count
           }.by 1

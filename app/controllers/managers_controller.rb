@@ -15,7 +15,7 @@ class ManagersController < ApplicationController
   def create
     @manager = Manager.new(manager_params)
     if @manager.save
-      render json: @manager, status: :created, location: @manager
+      render json: @manager, status: :created
     else
       render json: @manager.errors, status: :unprocessable_entity
     end

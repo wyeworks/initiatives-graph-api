@@ -10,7 +10,7 @@ class HelpersController < ApplicationController
   def create
     @initiative.helpers << helpers_from_body
     if @initiative.save
-      render json: @initiative.helpers, status: :created, location: @initiative
+      render json: @initiative.helpers, status: :created
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end
@@ -33,7 +33,8 @@ class HelpersController < ApplicationController
 
   def helpers_from_body
     params
-      .require(:_json)
+      .require(:initiative)
+      .require(:helpers)
       .map { |id| Wyeworker.find(id) }
   end
 end
