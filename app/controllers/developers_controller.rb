@@ -44,7 +44,7 @@ class DevelopersController < ApplicationController
   def developer_params
     params
       .require(:developer)
-      .permit(:name, :id, owner_initiatives: [], helped_initiatives: [])
+      .permit(:name, :id)
   end
 
   def set_developer
