@@ -44,7 +44,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_26_165003) do
   end
 
   add_foreign_key "initiatives", "initiatives", column: "parent_id"
-  add_foreign_key "initiatives", "wyeworkers", column: "owner_id"
   add_foreign_key "initiatives", "wyeworkers", column: "owner_id", on_delete: :cascade
   add_foreign_key "initiatives_wyeworkers", "initiatives", on_delete: :cascade
   add_foreign_key "initiatives_wyeworkers", "wyeworkers", on_delete: :cascade
