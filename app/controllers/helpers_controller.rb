@@ -28,8 +28,7 @@ class HelpersController < ApplicationController
   private
 
   def set_initiative
-    @initiative_id = params[:initiative_id]
-    @initiative = Initiative.find(@initiative_id)
+    @initiative = Initiative.find(params[:initiative_id])
   end
 
   def helpers_from_body
