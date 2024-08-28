@@ -27,8 +27,7 @@ RSpec.describe "Developers Endpoint", type: :request do
 
   it "PUT /developers" do
     developer = create(:developer)
-    different_name = "A different developer name"
-    developer.name = different_name
+    developer.name = "A different developer name"
 
     put developer_path(developer), params: developer.as_json, as: :json
     expect(response).to have_http_status(:ok)

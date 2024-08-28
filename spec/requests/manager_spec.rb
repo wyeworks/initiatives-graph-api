@@ -27,8 +27,7 @@ RSpec.describe "Managers Endpoint", type: :request do
 
   it "PUT /managers" do
     manager = create(:manager)
-    different_name = "A different manager name"
-    manager.name = different_name
+    manager.name = "A different manager name"
 
     put manager_path(manager), params: manager.as_json, as: :json
     expect(response).to have_http_status(:ok)
