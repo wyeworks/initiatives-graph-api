@@ -27,7 +27,7 @@
 #  parent_id  (parent_id => initiatives.id)
 #
 FactoryBot.define do
-  factory :initiative, aliases: %i[initiative_no_parent] do
+  factory :initiative do
     sequence :title do |n|
       "Initiative-#{n}"
     end
@@ -42,21 +42,10 @@ FactoryBot.define do
 
     owner { create :manager }
 
-    factory :initiative_no_helpers do
-      helpers { [] }
-    end
+    parent { create(:initiative, :no_parent) }
 
-    trait :with_helpers do
-      helpers { build_list(:developer, 3) << build(:manager) }
-    end
-
-    trait :with_parent do
-      parent { build(:initiative) }
-    end
-
-    trait :with_helpers_no_manager do
-      owner { create :developer }
-      helpers { build_list(:developer, 3) }
+    trait :no_parent do
+      parent { nil }
     end
   end
 end
