@@ -10,18 +10,12 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiatives
     all_db_initiatives = Initiative.all
     get initiatives_path, as: :json
-    expect(response.parsed_body).to eq(all_db_initiatives.as_json(include: {
-                                                                    owner: { only: [:id] },
-                                                                    parent: { only: [:id] }
-                                                                  }))
+    expect(response.parsed_body).to eq(all_db_initiatives.as_json)
   end
 
   it "GET /initiatives/:initiative_id" do
     get initiative_path(initiative), as: :json
-    expect(response.parsed_body).to eq(initiative.as_json(include: {
-                                                            owner: { only: [:id] },
-                                                            parent: { only: [:id] }
-                                                          }))
+    expect(response.parsed_body).to eq(initiative.as_json)
   end
 
   it "POST /initiatives" do
@@ -36,10 +30,7 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     db_initiative = Initiative.find_by(title: initiative[:title])
     expect(db_initiative).not_to be_nil
 
-    expect(response.parsed_body).to eq(db_initiative.as_json(include: {
-                                                               owner: { only: [:id] },
-                                                               parent: { only: [:id] }
-                                                             }))
+    expect(response.parsed_body).to eq(db_initiative.as_json)
   end
 
   it "PUT /initiatives" do
@@ -47,18 +38,14 @@ RSpec.describe "Initiatives Endpoint", type: :request do
     initiative = create(:initiative)
     initiative.title = different_title
 
-    include = {
-      owner: { only: [:id] },
-      parent: { only: [:id] }
-    }
-    expect { put initiative_path(initiative.id), params: initiative.as_json(include:), as: :json }
+    expect { put initiative_path(initiative.id), params: initiative.as_json, as: :json }
       .to change(Initiative, :all)
 
     db_initiative = Initiative.find_by(title: different_title)
 
     expect(db_initiative).not_to be_nil
 
-    expect(response.parsed_body).to eq(db_initiative.as_json(include:))
+    expect(response.parsed_body).to eq(db_initiative.as_json)
   end
 
   it "DELETE /initiatives/:initiative_id" do
