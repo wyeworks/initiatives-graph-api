@@ -41,12 +41,7 @@ class Initiative < ApplicationRecord
   validate :must_have_manager
 
   def must_have_manager
-    if !(
-      owner.is_a?(Manager) ||
-        helpers.any? { |h| h.is_a?(Manager) }
-    )
-      errors.add !owner.is_a?(Manager) ? :source : :helpers,
-                 "An initiative must have a manager involved, as a source or as a helper"
-    end
+    err_message = "An initiative must have a manager involved, as a source or as a helper"
+    errors.add :error, err_message if owner.is_a?(Developer) && helpers.all? { |h| h.is_a?(Developer) }
   end
 end
