@@ -26,12 +26,12 @@ RSpec.describe "Managers Endpoint", type: :request do
   end
 
   it "PUT /managers" do
-    manager = create(:manager)
-    manager.name = "A different manager name"
+    different_name = "A different manager name"
+    manager.name = different_name
 
-    put manager_path(manager), params: manager.as_json, as: :json
-    expect(response).to have_http_status(:ok)
-    expect(response.parsed_body.except("updated_at")).to eq(manager.as_json.except("updated_at"))
+    put manager_path(manager), params: { manager: { name: different_name } }, as: :json
+    expect(manager.reload.name).to eq(different_name)
+    expect(response.parsed_body).to eq(manager.as_json)
   end
 
   it "DELETE /managers/:manager_id" do

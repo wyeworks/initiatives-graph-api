@@ -26,12 +26,12 @@ RSpec.describe "Developers Endpoint", type: :request do
   end
 
   it "PUT /developers" do
-    developer = create(:developer)
-    developer.name = "A different developer name"
+    different_name = "A different developer name"
+    developer.name = different_name
 
-    put developer_path(developer), params: developer.as_json, as: :json
-    expect(response).to have_http_status(:ok)
-    expect(response.parsed_body.except("updated_at")).to eq(developer.as_json.except("updated_at"))
+    put developer_path(developer), params: { developer: { name: different_name } }, as: :json
+    expect(developer.reload.name).to eq(different_name)
+    expect(response.parsed_body).to eq(developer.as_json)
   end
 
   it "DELETE /developers/:developer_id" do
