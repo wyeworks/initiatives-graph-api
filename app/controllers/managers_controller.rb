@@ -44,7 +44,7 @@ class ManagersController < ApplicationController
   def manager_params
     params
       .require(:manager)
-      .permit(:name, :id, owner_initiatives: [], helped_initiatives: [])
+      .permit(:name)
   end
 
   def set_manager
