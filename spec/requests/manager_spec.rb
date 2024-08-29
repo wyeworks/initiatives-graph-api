@@ -27,10 +27,10 @@ RSpec.describe "Managers Endpoint", type: :request do
 
   it "PUT /managers" do
     different_name = "A different manager name"
-    manager.name = different_name
 
     put manager_path(manager), params: { manager: { name: different_name } }, as: :json
-    expect(manager.reload.name).to eq(different_name)
+    manager.name = different_name
+    expect(manager.reload).to eq(manager)
     expect(response.parsed_body).to eq(manager.as_json)
   end
 

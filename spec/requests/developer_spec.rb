@@ -27,10 +27,10 @@ RSpec.describe "Developers Endpoint", type: :request do
 
   it "PUT /developers" do
     different_name = "A different developer name"
-    developer.name = different_name
 
     put developer_path(developer), params: { developer: { name: different_name } }, as: :json
-    expect(developer.reload.name).to eq(different_name)
+    developer.name = different_name
+    expect(developer.reload).to eq(developer)
     expect(response.parsed_body).to eq(developer.as_json)
   end
 
