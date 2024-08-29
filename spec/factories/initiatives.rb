@@ -36,13 +36,13 @@ FactoryBot.define do
       "Initiative Description #{n}"
     end
 
-    helpers { build_list(:wyeworker, 3) << build(:manager) }
-
     status { :in_progress }
 
-    owner { create :manager }
+    association :owner, factory: :manager
 
-    parent { create(:initiative, :no_parent) }
+    helpers { create_list(:developer, 3) }
+
+    association :parent, factory: %i[initiative no_parent]
 
     trait :no_parent do
       parent { nil }

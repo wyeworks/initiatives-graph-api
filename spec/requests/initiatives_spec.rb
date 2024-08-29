@@ -19,15 +19,15 @@ RSpec.describe "Initiatives Endpoint", type: :request do
   end
 
   it "POST /initiatives" do
-    initiative = attributes_for(:initiative)
-    initiative[:owner_id] = initiative.delete(:owner).id
+    initiative_attibutes = attributes_for(:initiative)
+    initiative_attibutes[:owner_id] = create(:manager).id
 
-    expect { post initiatives_path, params: initiative, as: :json }
+    expect { post initiatives_path, params: initiative_attibutes, as: :json }
       .to change {
             Initiative.all.count
           }.by 1
 
-    db_initiative = Initiative.find_by(title: initiative[:title])
+    db_initiative = Initiative.find_by(title: initiative_attibutes[:title])
     expect(db_initiative).not_to be_nil
 
     expect(response.parsed_body).to eq(db_initiative.as_json)
