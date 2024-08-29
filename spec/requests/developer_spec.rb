@@ -22,7 +22,7 @@ RSpec.describe "Developers Endpoint", type: :request do
 
     post developers_path, params: developer, as: :json
     expect(response).to have_http_status(:created)
-    expect(response.body).to include(developer[:name])
+    expect(response.parsed_body).to include(developer)
   end
 
   it "PUT /developers" do

@@ -22,7 +22,7 @@ RSpec.describe "Managers Endpoint", type: :request do
 
     post managers_path, params: manager, as: :json
     expect(response).to have_http_status(:created)
-    expect(response.body).to include(manager[:name])
+    expect(response.parsed_body).to include(manager)
   end
 
   it "PUT /managers" do
