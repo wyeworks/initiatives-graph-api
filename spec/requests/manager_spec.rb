@@ -37,5 +37,6 @@ RSpec.describe "Managers Endpoint", type: :request do
   it "DELETE /managers/:manager_id" do
     delete manager_path(manager), as: :json
     expect(response).to have_http_status(:no_content)
+    expect { manager.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 end

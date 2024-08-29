@@ -37,5 +37,6 @@ RSpec.describe "Developers Endpoint", type: :request do
   it "DELETE /developers/:developer_id" do
     delete developer_path(developer), as: :json
     expect(response).to have_http_status(:no_content)
+    expect { developer.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 end
