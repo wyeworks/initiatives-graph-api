@@ -48,7 +48,7 @@ RSpec.describe Initiative, type: :model do
         it "is valid" do
           initiative.owner = build(:manager)
           initiative.helpers = [build(:developer)]
-          expect(build(:initiative, owner: build(:manager), helpers: [])).to be_valid
+          expect(initiative).to be_valid
         end
       end
 
