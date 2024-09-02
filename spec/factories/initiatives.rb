@@ -40,8 +40,6 @@ FactoryBot.define do
 
     association :owner, factory: :manager
 
-    helpers { create_list(:developer, 3) }
-
     association :parent, factory: %i[initiative no_parent]
 
     trait :no_parent do
