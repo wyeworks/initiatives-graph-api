@@ -10,6 +10,7 @@ class InitiativesController < ApplicationController
   # POST
   def create
     @initiative = Initiative.create(initiative_params)
+    render status: :created
     render json: @initiative.errors, status: :unprocessable_entity unless @initiative.save
   end
 

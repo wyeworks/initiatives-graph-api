@@ -25,6 +25,8 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
             helped_initiative.helpers.count
           }.by 1
 
+    expect(response).to have_http_status(:created)
+
     db_helpers = helped_initiative.reload.helpers
 
     expect(response.parsed_body).to eq(db_helpers.as_json)

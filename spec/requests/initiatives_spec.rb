@@ -27,6 +27,8 @@ RSpec.describe "Initiatives Endpoint", type: :request do
             Initiative.all.count
           }.by 1
 
+    expect(response).to have_http_status(:created)
+
     db_initiative = Initiative.find_by(title: initiative_attibutes[:title])
     expect(db_initiative).not_to be_nil
 
