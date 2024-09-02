@@ -42,6 +42,8 @@ class Initiative < ApplicationRecord
 
   def must_have_manager
     err_message = "An initiative must have a manager involved, as a source or as a helper"
-    errors.add :error, err_message if owner.is_a?(Developer) && helpers.all? { |h| h.is_a?(Developer) }
+
+    no_manager = owner.is_a?(Developer) && helpers.all? { |helper| helper.is_a?(Developer) }
+    errors.add :error, err_message if no_manager
   end
 end
