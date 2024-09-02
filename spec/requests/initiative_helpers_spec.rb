@@ -40,6 +40,6 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
             helped_initiative.helpers.count
           }.by(-1)
 
-    expect(response.parsed_body).to eq(helped_initiative.reload.helpers.as_json)
+    expect(response.parsed_body).to eq(helped_initiative.helpers.reload.as_json)
   end
 end
