@@ -11,7 +11,7 @@ class InitiativesController < ApplicationController
   def create
     @initiative = Initiative.create(initiative_params)
     if @initiative.save
-      render status: :created
+      render :show, status: :created
     else
       render json: @initiative.errors, status: :unprocessable_entity
     end
@@ -19,7 +19,11 @@ class InitiativesController < ApplicationController
 
   # PATCH/PUT
   def update
-    render json: @initiative.errors, status: :unprocessable_entity unless @initiative.update(initiative_params)
+    if @initiative.update(initiative_params)
+      render :show
+    else
+      render json: @initiative.errors, status: :unprocessable_entity
+    end
   end
 
   # DELETE
