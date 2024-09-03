@@ -3,8 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "Initiative helpers Endpoint", type: :request do
-  let(:helper) { create(:developer) }
-  let(:helped_initiative) { create(:initiative, helpers: create_list(:developer, 3) << helper) }
+  let(:helped_initiative) { create(:initiative_with_helpers) }
 
   it "GET /initiatives/:initiative_id/helpers" do
     get initiative_helpers_path(helped_initiative.id), as: :json
@@ -33,6 +32,10 @@ RSpec.describe "Initiative helpers Endpoint", type: :request do
   end
 
   it "DELETE /initiatives/:initiative_id/helpers/:helper_id" do
+    helper = create(:developer)
+    helped_initiative.helpers << helper
+    helped_initiative.save
+
     helper_id = helper.id
 
     expect { delete initiative_helper_path(helped_initiative.id, helper_id), as: :json }

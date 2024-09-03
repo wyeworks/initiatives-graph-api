@@ -42,6 +42,17 @@ FactoryBot.define do
 
     association :parent, factory: %i[initiative no_parent]
 
+    factory :initiative_with_helpers do
+      transient do
+        developer_count { 2 }
+        manager_count { 0 }
+      end
+
+      helpers do
+        Array.new(developer_count) { association(:developer) } + Array.new(manager_count) { association(:manager) }
+      end
+    end
+
     trait :no_parent do
       parent { nil }
     end
