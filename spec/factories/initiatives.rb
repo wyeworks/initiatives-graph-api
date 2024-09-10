@@ -23,30 +23,38 @@
 #
 # Foreign Keys
 #
-#  owner_id   (owner_id => wyeworkers.id)
+#  owner_id   (owner_id => wyeworkers.id) ON DELETE => cascade
 #  parent_id  (parent_id => initiatives.id)
 #
 FactoryBot.define do
-  factory :initiative, aliases: %i[initiative_no_parent] do
+  factory :initiative do
     sequence :title do |n|
       "Initiative-#{n}"
     end
 
-    owner { build :manager }
-
-    helpers { build_list(:wyeworker, 3) << build(:manager) }
-
-    factory :initiative_no_helpers do
-      helpers { [] }
+    sequence :description do |n|
+      "Initiative Description #{n}"
     end
 
-    factory :initiative_with_parent do
-      parent { build :initiative }
+    status { :in_progress }
+
+    association :owner, factory: :manager
+
+    association :parent, factory: %i[initiative no_parent]
+
+    factory :initiative_with_helpers do
+      transient do
+        developer_count { 2 }
+        manager_count { 0 }
+      end
+
+      helpers do
+        Array.new(developer_count) { association(:developer) } + Array.new(manager_count) { association(:manager) }
+      end
     end
 
-    factory :initiative_no_manager do
-      owner { build :wyeworker }
-      helpers { build_list(:wyeworker, 3) }
+    trait :no_parent do
+      parent { nil }
     end
   end
 end

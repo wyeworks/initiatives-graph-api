@@ -14,9 +14,10 @@
 #
 #  index_wyeworkers_on_name  (name) UNIQUE
 #
-class Wyeworker < ApplicationRecord
-  has_many :owned_initiatives, foreign_key: :owner_id, class_name: "Initiative", dependent: :destroy
-  has_and_belongs_to_many :helped_initiatives, class_name: "Initiative"
-
-  validates :name, presence: true, uniqueness: true
+FactoryBot.define do
+  factory :manager do
+    sequence :name do |n|
+      "Manager-#{n}"
+    end
+  end
 end

@@ -23,7 +23,7 @@
 #
 # Foreign Keys
 #
-#  owner_id   (owner_id => wyeworkers.id)
+#  owner_id   (owner_id => wyeworkers.id) ON DELETE => cascade
 #  parent_id  (parent_id => initiatives.id)
 #
 class Initiative < ApplicationRecord
@@ -33,23 +33,17 @@ class Initiative < ApplicationRecord
 
   belongs_to :owner, dependent: :destroy, class_name: "Wyeworker"
 
-  has_one :parent, class_name: "Initiative", foreign_key: "parent_id"
+  has_many :children, class_name: "Initiative", foreign_key: "parent_id"
+  belongs_to :parent, class_name: "Initiative", optional: true
 
   validates :owner, presence: true
   validates :title, presence: true, uniqueness: true
   validate :must_have_manager
 
   def must_have_manager
-    if !(
-      owner.is_a?(Manager) ||
-        helpers.any? { |h| h.is_a?(Manager) }
-    )
-      errors.add :wyeworker_initiative_belongings,
-                 "An initiative must have a manager involved, as a source or as a helper"
-    end
-  end
+    err_message = "An initiative must have a manager involved, as a source or as a helper"
 
-  before_create do
-    self.description ||= "No description"
+    no_manager = owner.is_a?(Developer) && helpers.all? { |helper| helper.is_a?(Developer) }
+    errors.add :error, err_message if no_manager
   end
 end
