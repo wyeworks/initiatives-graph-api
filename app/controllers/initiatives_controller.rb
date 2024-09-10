@@ -9,7 +9,7 @@ class InitiativesController < ApplicationController
 
   # POST
   def create
-    @initiative = Initiative.create(initiative_params)
+    @initiative = Initiative.new(initiative_params)
     if @initiative.save
       render :show, status: :created
     else
